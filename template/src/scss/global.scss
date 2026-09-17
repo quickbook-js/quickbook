@@ -1,0 +1,474 @@
+/* Surowy styl w klimacie książki/dokumentacji na GitHub Pages z lekkimi pastelowymi motywami */
+
+/* Domowy motyw (default / light) */
+:root, body[data-theme="default"] {
+  --bg-color: #ffffff;
+  --nav-bg: #f6f8fa;
+  --text-color: #1f2328;
+  --muted-color: #57606a;
+  --border-color: #d0d7de;
+  --link-color: #0969da;
+  --code-bg: #f6f8fa;
+  --code-border: #d0d7de;
+
+  --sh-keyword: #cf222e;
+  --sh-string: #0a3069;
+  --sh-comment: #6e7781;
+  --sh-number: #0550ae;
+  --sh-class: #953800;
+  --sh-identifier: #1f2328;
+  --sh-sign: #24292f;
+  --sh-property: #0550ae;
+  --sh-jsxliteral: #0550ae;
+  --sh-space: transparent;
+}
+
+/* Motyw Dark (Ciemny) */
+body[data-theme="dark"] {
+  --bg-color: #0d1117;
+  --nav-bg: #161b22;
+  --text-color: #c9d1d9;
+  --muted-color: #8b949e;
+  --border-color: #30363d;
+  --link-color: #58a6ff;
+  --code-bg: #161b22;
+  --code-border: #30363d;
+
+  --sh-keyword: #ff7b72;
+  --sh-string: #a5d6ff;
+  --sh-comment: #8b949e;
+  --sh-number: #79c0ff;
+  --sh-class: #d2a8ff;
+  --sh-identifier: #c9d1d9;
+  --sh-sign: #8b949e;
+  --sh-property: #79c0ff;
+  --sh-jsxliteral: #79c0ff;
+  --sh-space: transparent;
+}
+
+/* Motyw Blue (Lekki pastelowy błękit) */
+body[data-theme="blue"] {
+  --bg-color: #f4f8fc;
+  --nav-bg: #e6f0fa;
+  --text-color: #1c2d42;
+  --muted-color: #4a6585;
+  --border-color: #cde0f5;
+  --link-color: #0066cc;
+  --code-bg: #eaf3fd;
+  --code-border: #c4dcf7;
+
+  --sh-keyword: #d01844;
+  --sh-string: #005bb5;
+  --sh-comment: #607996;
+  --sh-number: #0066cc;
+  --sh-class: #6f30a0;
+  --sh-identifier: #1c2d42;
+  --sh-sign: #2d4560;
+  --sh-property: #0066cc;
+  --sh-jsxliteral: #0066cc;
+  --sh-space: transparent;
+}
+
+/* Motyw Red (Lekka pastelowa różana czerwień) */
+body[data-theme="red"] {
+  --bg-color: #fdf6f6;
+  --nav-bg: #f9e8e8;
+  --text-color: #3b1c1c;
+  --muted-color: #754545;
+  --border-color: #f5c6c6;
+  --link-color: #d92638;
+  --code-bg: #f9ecec;
+  --code-border: #f3b8b8;
+
+  --sh-keyword: #b81424;
+  --sh-string: #8a2432;
+  --sh-comment: #7d5757;
+  --sh-number: #a81c2d;
+  --sh-class: #6b2450;
+  --sh-identifier: #3b1c1c;
+  --sh-sign: #4a2828;
+  --sh-property: #a81c2d;
+  --sh-jsxliteral: #a81c2d;
+  --sh-space: transparent;
+}
+
+/* Motyw Green (Lekka pastelowa szałwia/zieleniek) */
+body[data-theme="green"] {
+  --bg-color: #f3f8f4;
+  --nav-bg: #e2f0e5;
+  --text-color: #1b3322;
+  --muted-color: #466b50;
+  --border-color: #c4e4cc;
+  --link-color: #137a36;
+  --code-bg: #e8f3ea;
+  --code-border: #bce0c5;
+
+  --sh-keyword: #c01e38;
+  --sh-string: #137a36;
+  --sh-comment: #52755c;
+  --sh-number: #0f6c2f;
+  --sh-class: #5c3882;
+  --sh-identifier: #1b3322;
+  --sh-sign: #2b4733;
+  --sh-property: #0f6c2f;
+  --sh-jsxliteral: #0f6c2f;
+  --sh-space: transparent;
+}
+
+/* Motyw Coffee (Ciepła pastelowa kawa/sepia) */
+body[data-theme="coffee"] {
+  --bg-color: #fbf7f2;
+  --nav-bg: #f2e8dc;
+  --text-color: #36281e;
+  --muted-color: #6e5544;
+  --border-color: #e3d4c3;
+  --link-color: #8c531b;
+  --code-bg: #f4ede4;
+  --code-border: #dccbb8;
+
+  --sh-keyword: #ab2828;
+  --sh-string: #8c531b;
+  --sh-comment: #7d6b5e;
+  --sh-number: #784918;
+  --sh-class: #6f3b87;
+  --sh-identifier: #36281e;
+  --sh-sign: #4d3a2c;
+  --sh-property: #784918;
+  --sh-jsxliteral: #784918;
+  --sh-space: transparent;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+hr {
+  height: 1px;
+  background-color: var(--border-color);
+  border: 0;
+  margin: 1.5rem 0;
+}
+
+/* Układ główny */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Nawigacja górna */
+.site-nav {
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--border-color);
+
+  .nav-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-title {
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Nagłówek strony */
+.page-header {
+  margin-top: 1rem;
+
+  h1 {
+    font-size: 2.2rem;
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3em;
+  }
+
+  p {
+    color: var(--muted-color);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+/* Spis treści dla książki */
+.toc-section {
+  h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3em;
+    margin-top: 0;
+  }
+}
+
+.toc-toplevel {
+  margin-bottom: 1.5rem;
+}
+
+.toc-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.toc-chapter-block {
+  .chapter-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--text-color);
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.25rem;
+  }
+}
+
+.lesson-list {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+
+  .lesson-item {
+    margin-bottom: 0.75rem;
+
+    .toc-desc {
+      margin: 0.15rem 0 0;
+      color: var(--muted-color);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.book-toc-list {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+
+  .book-toc-item {
+    margin-bottom: 0.75rem;
+
+    .toc-desc {
+      margin: 0.15rem 0 0;
+      color: var(--muted-color);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Nawigacja w artykule */
+.nav-back {
+  margin: 1rem 0;
+
+  .back-link {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--link-color);
+    display: inline-block;
+  }
+}
+
+/* Nawigacja dolna na końcu artykułu (Poprzednia / Spis Treści / Następna lekcja) */
+.nav-article-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+
+  .nav-footer-col {
+    flex: 1;
+    min-width: 160px;
+
+    &.nav-prev {
+      text-align: left;
+    }
+
+    &.nav-home {
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    &.nav-next {
+      text-align: right;
+    }
+  }
+
+  .nav-link-prev, .nav-link-next {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--link-color);
+    display: inline-block;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Artykuł / Lekcja */
+.article-header {
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3em;
+  }
+
+  .article-desc {
+    color: var(--muted-color);
+    font-size: 1.05rem;
+    margin: 0.5rem 0 0;
+  }
+}
+
+/* Treść Markdown */
+.markdown-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+
+  h1, h2, h3, h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  ul, ol {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-left: 2em;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  blockquote {
+    margin: 1rem 0;
+    padding: 0 1em;
+    color: var(--muted-color);
+    border-left: 0.25em solid var(--border-color);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: var(--code-bg);
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace;
+    border: 1px solid var(--code-border);
+    color: var(--text-color);
+  }
+
+  pre {
+    padding: 1rem;
+    overflow: auto;
+    font-size: 88%;
+    line-height: 1.45;
+    background-color: var(--code-bg);
+    border-radius: 6px;
+    border: 1px solid var(--code-border);
+    margin-top: 0;
+    margin-bottom: 1rem;
+
+    code {
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+      border: 0;
+      font-size: 100%;
+    }
+  }
+}
+
+/* Kolorowanie składni z paczki sugar-high */
+code.sugar-high {
+  .sh__token--keyword { color: var(--sh-keyword) !important; font-weight: 600; }
+  .sh__token--string { color: var(--sh-string) !important; }
+  .sh__token--comment { color: var(--sh-comment) !important; font-style: italic; }
+  .sh__token--number { color: var(--sh-number) !important; }
+  .sh__token--class { color: var(--sh-class) !important; font-weight: 600; }
+  .sh__token--identifier { color: var(--sh-identifier) !important; }
+  .sh__token--sign { color: var(--sh-sign) !important; }
+  .sh__token--property { color: var(--sh-property) !important; }
+  .sh__token--jsxliteral { color: var(--sh-jsxliteral) !important; }
+}
+
+/* Stopka */
+.site-footer {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  text-align: center;
+  padding-bottom: 2rem;
+
+  .quickbook-credit {
+    display: inline-block;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--muted-color);
+    opacity: 0.85;
+
+    a {
+      color: var(--link-color);
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

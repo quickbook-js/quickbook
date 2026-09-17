@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{language}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}} - {{bookTitle}}</title>
+  <link rel="stylesheet" href="../../src/scss/global.scss">
+</head>
+<body data-theme="{{theme}}">
+  {{> navbar}}
+
+  <main class="container">
+    <div class="nav-back">
+      <a href="../../index.html" class="back-link">← Back to Table of Contents (Home)</a>
+    </div>
+
+    <header class="article-header">
+      <h1>{{pageTitle}}</h1>
+      <p class="article-desc"><em>{{pageDesc}}</em></p>
+    </header>
+
+    <hr />
+
+    <article class="markdown-body">
+      {{{articleBody}}}
+    </article>
+
+    <hr />
+
+    <nav class="nav-article-footer">
+      <div class="nav-footer-col nav-prev">
+        {{{prevLessonHtml}}}
+      </div>
+      <div class="nav-footer-col nav-home">
+        <a href="../../index.html" class="back-link">← Table of Contents</a>
+      </div>
+      <div class="nav-footer-col nav-next">
+        {{{nextLessonHtml}}}
+      </div>
+    </nav>
+  </main>
+
+  {{> footer}}
+</body>
+</html>

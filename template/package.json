@@ -1,0 +1,24 @@
+{
+  "name": "my-quickbook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "admin": "node .quickbook/server.js",
+    "generate": "node build-articles.js && vite build",
+    "dev": "node build-articles.js && vite",
+    "build": "node build-articles.js && vite build",
+    "preview": "vite preview",
+    "serve": "node build-articles.js && vite build && vite preview"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.13",
+    "sass": "^1.104.1",
+    "vite": "^8.3.0",
+    "vite-plugin-handlebars": "^2.0.3"
+  },
+  "dependencies": {
+    "sugar-high": "^2.4.1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "title": "My Quickbook Handbook",
+  "subtitle": "A step-by-step documentation guide",
+  "author": "Author Name",
+  "authorGithub": "https://github.com/your-username",
+  "description": "Interactive documentation published on GitHub Pages.",
+  "github": "https://github.com/your-username/my-quickbook",
+  "language": "en",
+  "theme": "dark"
+}

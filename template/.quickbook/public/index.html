@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quickbook Studio - Localhost:4455</title>
+  
+  <!-- Fonts & Dependencies -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #111726;
+      --bg-card-hover: #182235;
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-border-bright: rgba(255, 255, 255, 0.16);
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      --accent-solid: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.2);
+      
+      --sidebar-width: 330px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); }
+
+    /* Header Bar */
+    .header {
+      height: 60px;
+      background: rgba(17, 23, 38, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 20;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--success);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-dropdown-wrapper {
+      position: relative;
+    }
+
+    .theme-select {
+      appearance: none;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--surface-border);
+      padding: 0.45rem 2.2rem 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .theme-select:hover {
+      border-color: var(--surface-border-bright);
+      background: var(--bg-card-hover);
+    }
+
+    .theme-select:focus {
+      outline: none;
+      border-color: var(--accent-solid);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .theme-chevron {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-gradient {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    .btn-gradient:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .btn-glass {
+      background: var(--bg-card);
+      border-color: var(--surface-border);
+      color: var(--text-main);
+    }
+    .btn-glass:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--surface-border-bright);
+      color: #fff;
+    }
+
+    .btn-subtle {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      border-color: var(--surface-border);
+    }
+    .btn-subtle:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    /* App Workspace Layout */
+    .app-workspace {
+      flex: 1;
+      display: flex;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+
+    /* Sidebar Tree */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-card);
+      border-right: 1px solid var(--surface-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sidebar-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: inherit;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-solid);
+    }
+
+    .tree-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem 0.6rem;
+    }
+
+    .tree-chapter-group {
+      margin-bottom: 0.85rem;
+    }
+
+    .chapter-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      transition: background 0.15s ease;
+    }
+    .chapter-heading:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .tree-node {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0.65rem 0.4rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-top: 2px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .tree-node:hover {
+      background: var(--bg-card-hover);
+      color: #fff;
+    }
+
+    .tree-node.active {
+      background: rgba(99, 102, 241, 0.14);
+      color: #818cf8;
+      font-weight: 600;
+    }
+
+    .tree-node.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      border-radius: 2px;
+      background: var(--accent-gradient);
+    }
+
+    .node-actions {
+      display: none;
+      gap: 0.2rem;
+    }
+
+    .tree-node:hover .node-actions, .chapter-heading:hover .node-actions {
+      display: flex;
+    }
+
+    .icon-action {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .icon-action:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Main Content Area */
+    .editor-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-dark);
+    }
+
+    .editor-header {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .input-title {
+      flex: 2;
+      background: var(--bg-dark);
+      border: 1px solid var(--surface-border);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+    }
+    .input-title:focus {
+      outline: none;
+      border-color: var(--accent-solid);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .input-path-readonly {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--surface-border);
+      color: var(--text-dim);
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .input-desc {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    .input-desc:focus {
+      outline: none;
+      border-color: var(--accent-solid);
+    }
+
+    /* Editor Toolbar */
+    .toolbar-bar {
+      padding: 0.45rem 1.5rem;
+      background: rgba(255, 255, 255, 0.015);
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .t-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.25rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.15s ease;
+    }
+    .t-btn:hover {
+      background: var(--surface-border);
+      color: #fff;
+    }
+
+    .view-toggle-group {
+      display: flex;
+      background: var(--bg-dark);
+      border: 1px solid var(--surface-border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .view-toggle-btn {
+      padding: 0.25rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .view-toggle-btn.active {
+      background: var(--bg-card-hover);
+      color: #fff;
+    }
+
+    /* Split Workspace Pane */
+    .pane-split {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .editor-pane, .preview-pane {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .editor-pane {
+      border-right: 1px solid var(--surface-border);
+    }
+
+    textarea.code-textarea {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      color: #e2e8f0;
+      border: none;
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      resize: none;
+    }
+    textarea.code-textarea:focus { outline: none; }
+
+    .preview-pane {
+      padding: 1.75rem 2rem;
+      background: #0b0f19;
+      color: #cbd5e1;
+    }
+
+    /* Markdown Rendered Preview Styling */
+    .preview-body h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin: 1rem 0 0.75rem; border-bottom: 1px solid var(--surface-border); padding-bottom: 0.4em; }
+    .preview-body h2 { font-size: 1.4rem; font-weight: 600; color: #f1f5f9; margin: 1.25rem 0 0.6rem; border-bottom: 1px solid var(--surface-border); padding-bottom: 0.3em; }
+    .preview-body h3 { font-size: 1.15rem; font-weight: 600; color: #e2e8f0; margin: 1rem 0 0.5rem; }
+    .preview-body p { line-height: 1.7; margin-bottom: 1rem; color: #cbd5e1; }
+    .preview-body ul, .preview-body ol { margin-bottom: 1rem; padding-left: 1.5rem; line-height: 1.6; }
+    .preview-body code { background: rgba(255,255,255,0.08); color: #a5b4fc; padding: 0.2em 0.4em; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 85%; }
+    .preview-body pre { background: #111726; border: 1px solid var(--surface-border); padding: 1.1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.2rem; }
+    .preview-body pre code { background: transparent; padding: 0; color: #e2e8f0; }
+    .preview-body blockquote { border-left: 3px solid var(--accent-solid); padding-left: 1rem; color: var(--text-muted); margin-bottom: 1rem; font-style: italic; }
+
+    /* Modal Overlay */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4, 7, 13, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--surface-border-bright);
+      border-radius: 12px;
+      width: 520px;
+      max-width: 92vw;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-solid);
+      color: #fff;
+      padding: 0.85rem 1.4rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      z-index: 200;
+    }
+    .toast-msg.active {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="header">
+    <div class="brand-group">
+      <div class="brand-logo">📖</div>
+      <div class="brand-title">
+        Quickbook Studio
+        <span class="status-badge">
+          <span class="status-dot"></span>
+          <span id="bookTitleBadge">Loading...</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="theme-dropdown-wrapper">
+        <select class="theme-select" id="themeSelect" onchange="updateTheme(this.value)">
+          <option value="dracula">🧛 Dracula Theme</option>
+          <option value="dark">🌙 Dark Mode</option>
+          <option value="default">☀️ Default (Light)</option>
+          <option value="blue">🔷 Pastel Blue</option>
+          <option value="red">🌹 Pastel Red</option>
+          <option value="green">🌿 Pastel Green</option>
+          <option value="coffee">☕ Pastel Coffee</option>
+        </select>
+        <span class="theme-chevron">▼</span>
+      </div>
+
+      <button class="btn btn-glass" onclick="openSettingsModal()">⚙️ Settings</button>
+      <button class="btn btn-gradient" onclick="generateSite()">⚡ Generate Dist</button>
+    </div>
+  </header>
+
+  <!-- Main App Workspace -->
+  <div class="app-workspace">
+    
+    <!-- Left Sidebar File Explorer -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-header-top">
+          <span class="sidebar-label">Explorer</span>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn btn-subtle" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="promptNewChapter()">+ Chapter</button>
+            <button class="btn btn-gradient" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="promptNewArticle()">+ Article</button>
+          </div>
+        </div>
+        <input type="text" class="search-input" id="searchInput" placeholder="Filter articles..." oninput="filterTree()" />
+      </div>
+
+      <div class="tree-scroll" id="treeContainer">
+        <!-- Chapters and Articles tree loaded here -->
+      </div>
+    </aside>
+
+    <!-- Center & Right Workspace -->
+    <main class="editor-container">
+      <div class="editor-header">
+        <div class="meta-row">
+          <input type="text" class="input-title" id="articleTitleInput" placeholder="Article Title..." />
+          <input type="text" class="input-path-readonly" id="articlePathInput" readonly placeholder="Path..." />
+          <button class="btn btn-gradient" onclick="saveCurrentArticle()">💾 Save (Ctrl+S)</button>
+        </div>
+        <input type="text" class="input-desc" id="articleDescInput" placeholder="Brief summary or description..." />
+      </div>
+
+      <!-- Formatting Toolbar -->
+      <div class="toolbar-bar">
+        <div class="toolbar-group">
+          <button class="t-btn" title="Bold" onclick="insertSyntax('**', '**')"><b>B</b></button>
+          <button class="t-btn" title="Italic" onclick="insertSyntax('*', '*')"><i>I</i></button>
+          <button class="t-btn" title="Heading 1" onclick="insertSyntax('# ', '')">H1</button>
+          <button class="t-btn" title="Heading 2" onclick="insertSyntax('## ', '')">H2</button>
+          <button class="t-btn" title="Inline Code" onclick="insertSyntax('`', '`')">Code</button>
+          <button class="t-btn" title="Code Block" onclick="insertSyntax('```javascript\n', '\n```')">Block</button>
+          <button class="t-btn" title="Link" onclick="insertSyntax('[', '](https://)')">Link</button>
+          <button class="t-btn" title="Bullet List" onclick="insertSyntax('- ', '')">List</button>
+          <button class="t-btn" title="Quote" onclick="insertSyntax('> ', '')">Quote</button>
+        </div>
+
+        <div class="view-toggle-group">
+          <button class="view-toggle-btn active" id="btnModeSplit" onclick="setMode('split')">Split</button>
+          <button class="view-toggle-btn" id="btnModeEditor" onclick="setMode('editor')">Editor</button>
+          <button class="view-toggle-btn" id="btnModePreview" onclick="setMode('preview')">Preview</button>
+        </div>
+      </div>
+
+      <!-- Split View Workspace -->
+      <div class="pane-split" id="paneSplit">
+        <div class="editor-pane" id="editorPane">
+          <textarea class="code-textarea" id="markdownTextarea" placeholder="Write markdown content here..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="preview-pane" id="previewPane">
+          <div class="preview-body" id="previewBody">
+            <em style="color: var(--text-dim)">Select an article from the explorer on the left to start editing...</em>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-title">⚙️ Project Configuration</div>
+      
+      <div class="field-group">
+        <label class="field-label">Book Title</label>
+        <input type="text" class="input-title" id="cfgTitle" style="font-size: 0.9rem;" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Subtitle</label>
+        <input type="text" class="input-title" id="cfgSubtitle" style="font-size: 0.9rem;" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Author Name</label>
+        <input type="text" class="input-title" id="cfgAuthor" style="font-size: 0.9rem;" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Author GitHub URL (Optional)</label>
+        <input type="text" class="input-title" id="cfgAuthorGithub" placeholder="https://github.com/username" style="font-size: 0.9rem;" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Description</label>
+        <input type="text" class="input-title" id="cfgDescription" style="font-size: 0.9rem;" />
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.5rem;">
+        <button class="btn btn-glass" onclick="closeSettingsModal()">Cancel</button>
+        <button class="btn btn-gradient" onclick="saveSettingsForm()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-msg" id="toast">
+    <span id="toastIcon">✨</span>
+    <span id="toastText">Notification</span>
+  </div>
+
+  <script>
+    let currentPath = '';
+    let currentConfig = {};
+    let articlesData = { topLevel: [], chapters: [] };
+
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.add('active');
+      setTimeout(() => { toast.classList.remove('active'); }, 3000);
+    }
+
+    async function fetchConfig() {
+      const res = await fetch('/api/config');
+      currentConfig = await res.json();
+      document.getElementById('bookTitleBadge').innerText = currentConfig.title || 'Quickbook';
+      document.getElementById('themeSelect').value = currentConfig.theme || 'dark';
+
+      document.getElementById('cfgTitle').value = currentConfig.title || '';
+      document.getElementById('cfgSubtitle').value = currentConfig.subtitle || '';
+      document.getElementById('cfgAuthor').value = currentConfig.author || '';
+      document.getElementById('cfgAuthorGithub').value = currentConfig.authorGithub || '';
+      document.getElementById('cfgDescription').value = currentConfig.description || '';
+    }
+
+    async function updateTheme(theme) {
+      currentConfig.theme = theme;
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentConfig)
+      });
+      showToast(`Theme updated to ${theme}`, '🎨');
+    }
+
+    async function fetchTree() {
+      const res = await fetch('/api/articles');
+      articlesData = await res.json();
+      renderTree(articlesData);
+    }
+
+    function renderTree(data) {
+      const container = document.getElementById('treeContainer');
+      container.innerHTML = '';
+      const filter = document.getElementById('searchInput').value.toLowerCase();
+
+      // Top-level articles
+      data.topLevel.forEach(art => {
+        if (filter && !art.title.toLowerCase().includes(filter)) return;
+
+        const div = document.createElement('div');
+        div.className = `tree-node ${currentPath === art.relativePath ? 'active' : ''}`;
+        div.innerHTML = `
+          <span>📄 ${art.title}</span>
+          <div class="node-actions">
+            <button class="icon-action" title="Delete Article" onclick="event.stopPropagation(); deleteArticle('${art.relativePath}')">🗑️</button>
+          </div>
+        `;
+        div.onclick = () => loadArticle(art.relativePath);
+        container.appendChild(div);
+      });
+
+      // Chapters
+      data.chapters.forEach(chap => {
+        const matchingLessons = chap.lessons.filter(l => !filter || l.title.toLowerCase().includes(filter));
+        if (filter && matchingLessons.length === 0 && !chap.name.toLowerCase().includes(filter)) return;
+
+        const chapGroup = document.createElement('div');
+        chapGroup.className = 'tree-chapter-group';
+
+        const header = document.createElement('div');
+        header.className = 'chapter-heading';
+        header.innerHTML = `
+          <span>📁 Chapter ${chap.number}: ${chap.name}</span>
+          <div class="node-actions">
+            <button class="icon-action" title="Add Lesson" onclick="event.stopPropagation(); promptNewLesson('${chap.number}', '${chap.dirName}')">+</button>
+            <button class="icon-action" title="Delete Chapter" onclick="event.stopPropagation(); deleteChapter('${chap.dirName}')">🗑️</button>
+          </div>
+        `;
+        chapGroup.appendChild(header);
+
+        matchingLessons.forEach(les => {
+          const lesDiv = document.createElement('div');
+          lesDiv.className = `tree-node ${currentPath === les.relativePath ? 'active' : ''}`;
+          lesDiv.innerHTML = `
+            <span>📝 ${les.title}</span>
+            <div class="node-actions">
+              <button class="icon-action" title="Delete Lesson" onclick="event.stopPropagation(); deleteArticle('${les.relativePath}')">🗑️</button>
+            </div>
+          `;
+          lesDiv.onclick = () => loadArticle(les.relativePath);
+          chapGroup.appendChild(lesDiv);
+        });
+
+        container.appendChild(chapGroup);
+      });
+    }
+
+    function filterTree() {
+      renderTree(articlesData);
+    }
+
+    async function loadArticle(relPath) {
+      currentPath = relPath;
+      const res = await fetch(`/api/article?path=${encodeURIComponent(relPath)}`);
+      const data = await res.json();
+
+      document.getElementById('articleTitleInput').value = data.title || '';
+      document.getElementById('articlePathInput').value = data.relativePath || '';
+      document.getElementById('articleDescInput').value = data.description || '';
+      document.getElementById('markdownTextarea').value = data.content || '';
+
+      updatePreview();
+      renderTree(articlesData);
+    }
+
+    function updatePreview() {
+      const text = document.getElementById('markdownTextarea').value;
+      document.getElementById('previewBody').innerHTML = marked.parse(text);
+    }
+
+    async function saveCurrentArticle() {
+      if (!currentPath) {
+        showToast('No article selected!', '⚠️');
+        return;
+      }
+      const title = document.getElementById('articleTitleInput').value;
+      const description = document.getElementById('articleDescInput').value;
+      const content = document.getElementById('markdownTextarea').value;
+
+      const res = await fetch('/api/article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ relativePath: currentPath, title, description, content })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Article saved successfully!', '💾');
+        fetchTree();
+      } else {
+        showToast('Error saving article', '❌');
+      }
+    }
+
+    async function promptNewChapter() {
+      const num = prompt('Enter Chapter Number (e.g. 1):');
+      if (!num) return;
+      const name = prompt('Enter Chapter Name (e.g. Getting Started):');
+      if (!name) return;
+
+      const res = await fetch('/api/chapter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ number: num, name })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Chapter created!', '📁');
+        fetchTree();
+      }
+    }
+
+    async function promptNewLesson(chapNum, chapDirName) {
+      const lesNum = prompt('Enter Lesson Number (e.g. 1):');
+      if (!lesNum) return;
+      const title = prompt('Enter Lesson Title (e.g. Introduction):');
+      if (!title) return;
+
+      const relPath = `${chapDirName}/${lesNum} ${title}.md`;
+      await fetch('/api/article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ relativePath: relPath, title, description: '', content: `# ${title}\n\nStart writing lesson content...` })
+      });
+      showToast('Lesson created!', '📝');
+      await fetchTree();
+      loadArticle(relPath);
+    }
+
+    async function promptNewArticle() {
+      const title = prompt('Enter Top-level Article Title:');
+      if (!title) return;
+      const filename = title.toLowerCase().replace(/[^a-z0-9]/g, '-') + '.md';
+
+      await fetch('/api/article', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ relativePath: filename, title, description: '', content: `# ${title}\n\nStart writing...` })
+      });
+      showToast('Article created!', '📄');
+      await fetchTree();
+      loadArticle(filename);
+    }
+
+    async function deleteArticle(relPath) {
+      if (!confirm(`Delete ${relPath}?`)) return;
+      await fetch('/api/article', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ relativePath: relPath })
+      });
+      showToast('Article deleted!', '🗑️');
+      if (currentPath === relPath) {
+        currentPath = '';
+        document.getElementById('markdownTextarea').value = '';
+        document.getElementById('previewBody').innerHTML = '';
+      }
+      fetchTree();
+    }
+
+    async function deleteChapter(folderName) {
+      if (!confirm(`Delete entire chapter "${folderName}"?`)) return;
+      await fetch('/api/chapter', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folderName })
+      });
+      showToast('Chapter deleted!', '🗑️');
+      fetchTree();
+    }
+
+    async function generateSite() {
+      showToast('Generating site build...', '⚡');
+      const res = await fetch('/api/generate', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        showToast('⚡ Site successfully generated in /dist!', '🚀');
+      } else {
+        showToast('Error generating site: ' + data.error, '❌');
+      }
+    }
+
+    function setMode(mode) {
+      document.getElementById('btnModeSplit').classList.toggle('active', mode === 'split');
+      document.getElementById('btnModeEditor').classList.toggle('active', mode === 'editor');
+      document.getElementById('btnModePreview').classList.toggle('active', mode === 'preview');
+
+      const editorPane = document.getElementById('editorPane');
+      const previewPane = document.getElementById('previewPane');
+
+      if (mode === 'split') {
+        editorPane.style.display = 'block';
+        previewPane.style.display = 'block';
+      } else if (mode === 'editor') {
+        editorPane.style.display = 'block';
+        previewPane.style.display = 'none';
+      } else if (mode === 'preview') {
+        editorPane.style.display = 'none';
+        previewPane.style.display = 'block';
+      }
+    }
+
+    function insertSyntax(before, after) {
+      const textarea = document.getElementById('markdownTextarea');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const sel = textarea.value.substring(start, end);
+      textarea.value = textarea.value.substring(0, start) + before + sel + after + textarea.value.substring(end);
+      updatePreview();
+    }
+
+    function openSettingsModal() { document.getElementById('settingsModal').classList.add('active'); }
+    function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
+
+    async function saveSettingsForm() {
+      currentConfig.title = document.getElementById('cfgTitle').value;
+      currentConfig.subtitle = document.getElementById('cfgSubtitle').value;
+      currentConfig.author = document.getElementById('cfgAuthor').value;
+      currentConfig.authorGithub = document.getElementById('cfgAuthorGithub').value;
+      currentConfig.description = document.getElementById('cfgDescription').value;
+
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentConfig)
+      });
+      showToast('Settings saved!', '⚙️');
+      closeSettingsModal();
+      fetchConfig();
+    }
+
+    // Keyboard shortcut Ctrl+S
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveCurrentArticle();
+      }
+    });
+
+    // Init
+    fetchConfig();
+    fetchTree();
+  </script>
+</body>
+</html>

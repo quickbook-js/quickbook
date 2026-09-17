@@ -1,0 +1,24 @@
+{
+  "name": "create-quickbook",
+  "version": "1.0.0",
+  "description": "CLI generator for Quickbook - GitHub Pages documentation & book starter template",
+  "bin": {
+    "create-quickbook": "bin/create-quickbook.js"
+  },
+  "type": "module",
+  "files": [
+    "bin",
+    "template",
+    "logo.png"
+  ],
+  "keywords": [
+    "quickbook",
+    "create-quickbook",
+    "vite",
+    "github-pages",
+    "documentation",
+    "book-template"
+  ],
+  "author": "Mariusz",
+  "license": "MIT"
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{{language}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{bookTitle}} - {{bookSubtitle}}</title>
+  <link rel="stylesheet" href="./src/scss/global.scss">
+</head>
+<body data-theme="{{theme}}">
+  {{> navbar}}
+
+  <main class="container">
+    <header class="page-header">
+      <h1>{{bookTitle}}</h1>
+      <p>{{bookSubtitle}}</p>
+      <p class="author-meta">Author: <strong>{{{authorHtml}}}</strong></p>
+    </header>
+
+    <hr />
+
+    <section id="table-of-contents" class="toc-section">
+      <h2>Table of Contents</h2>
+      {{> toc}}
+    </section>
+  </main>
+
+  {{> footer}}
+</body>
+</html>

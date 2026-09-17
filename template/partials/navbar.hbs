@@ -1,0 +1,9 @@
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href="{{#if isArticle}}../../index.html{{else}}./index.html{{/if}}" class="nav-title">📖 {{bookTitle}}</a>
+    <div class="nav-links">
+      <a href="{{#if isArticle}}../../index.html{{else}}./index.html{{/if}}">Home</a>
+      <a href="{{#if isArticle}}../../index.html#table-of-contents{{else}}#table-of-contents{{/if}}">Table of Contents</a>
+    </div>
+  </div>
+</nav>

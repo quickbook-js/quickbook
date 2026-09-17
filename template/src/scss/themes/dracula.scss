@@ -1,0 +1,22 @@
+/* Motyw Dracula dla Quickbook */
+body[data-theme="dracula"] {
+  --bg-color: #282a36;
+  --nav-bg: #1e1f29;
+  --text-color: #f8f8f2;
+  --muted-color: #6272a4;
+  --border-color: #44475a;
+  --link-color: #8be9fd;
+  --code-bg: #191a21;
+  --code-border: #44475a;
+
+  --sh-keyword: #ff79c6;
+  --sh-string: #f1fa8c;
+  --sh-comment: #6272a4;
+  --sh-number: #bd93f9;
+  --sh-class: #8be9fd;
+  --sh-identifier: #f8f8f2;
+  --sh-sign: #ff79c6;
+  --sh-property: #50fa7b;
+  --sh-jsxliteral: #f1fa8c;
+  --sh-space: transparent;
+}
