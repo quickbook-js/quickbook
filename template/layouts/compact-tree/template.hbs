@@ -1,0 +1,39 @@
+<div class="qb-layout-compact-tree">
+  {{#if topLevelArticles.length}}
+  <div class="tree-group">
+    <div class="tree-group-header">
+      <i class='bx bx-paperclip'></i> <span>General Overview</span>
+    </div>
+    <ul class="tree-nodes">
+      {{#each topLevelArticles}}
+      <li class="tree-node">
+        <a href="{{url}}" class="node-link">
+          <i class='bx bx-file-blank'></i>
+          <span class="node-title">{{title}}</span>
+        </a>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  {{#if sortedChapters.length}}
+  {{#each sortedChapters}}
+  <div class="tree-group">
+    <div class="tree-group-header">
+      <i class='bx bx-folder-open'></i> <span>Chapter {{number}}: {{name}}</span>
+    </div>
+    <ul class="tree-nodes">
+      {{#each lessons}}
+      <li class="tree-node">
+        <a href="{{url}}" class="node-link">
+          <i class='bx bx-file'></i>
+          <span class="node-title">{{displayTitleClean}}</span>
+        </a>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+  {{/if}}
+</div>

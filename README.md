@@ -51,6 +51,7 @@ Features:
 | Command | Description |
 |---|---|
 | `npm run admin` | Launches local Admin Studio Dashboard at `http://localhost:4455` |
+| `npm run update` | Updates Quickbook Studio & core framework files to the latest version (preserves your articles and config) |
 | `npm run generate` | Generates all static HTML pages and builds the production output to `/dist` |
 | `npm run dev` | Starts local development server with hot reloading |
 | `npm run build` | Builds the production bundle |

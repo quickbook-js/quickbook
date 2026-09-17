@@ -1,4 +1,5 @@
-/* Surowy styl w klimacie książki/dokumentacji na GitHub Pages z lekkimi pastelowymi motywami */
+/* Import custom themes */
+@import './themes/dracula.scss';
 
 /* Domowy motyw (default / light) */
 :root, body[data-theme="default"] {

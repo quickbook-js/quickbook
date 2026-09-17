@@ -1,0 +1,58 @@
+/* Compact Tree Headless CSS - Fully Reactive with Theme Variables */
+.qb-layout-compact-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.qb-layout-compact-tree .tree-group {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--nav-bg);
+  overflow: hidden;
+}
+
+.qb-layout-compact-tree .tree-group-header {
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.qb-layout-compact-tree .tree-nodes {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0;
+}
+
+.qb-layout-compact-tree .tree-node {
+  margin: 0;
+}
+
+.qb-layout-compact-tree .node-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.1s ease;
+}
+
+.qb-layout-compact-tree .node-link:hover {
+  background-color: var(--code-bg);
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.qb-layout-compact-tree .node-link i {
+  font-size: 1rem;
+  color: var(--muted-color);
+}

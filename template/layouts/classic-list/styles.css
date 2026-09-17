@@ -1,0 +1,42 @@
+/* Classic List Headless CSS - Fully Reactive with Theme Variables */
+.qb-layout-classic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.qb-layout-classic-list .toc-toplevel {
+  margin-bottom: 1rem;
+}
+
+.qb-layout-classic-list .toc-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.qb-layout-classic-list .toc-chapter-block .chapter-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--text-color);
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 0.25rem;
+}
+
+.qb-layout-classic-list .lesson-list,
+.qb-layout-classic-list .book-toc-list {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.qb-layout-classic-list .lesson-item,
+.qb-layout-classic-list .book-toc-item {
+  margin-bottom: 0.75rem;
+}
+
+.qb-layout-classic-list .toc-desc {
+  margin: 0.15rem 0 0;
+  color: var(--muted-color);
+  font-size: 0.9rem;
+}

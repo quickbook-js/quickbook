@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "CLI generator for Quickbook - GitHub Pages documentation & book starter template",
   "bin": {
-    "create-quickbook": "bin/create-quickbook.js"
+    "create-quickbook": "bin/create-quickbook.js",
+    "quickbook": "bin/create-quickbook.js"
   },
   "type": "module",
   "files": [

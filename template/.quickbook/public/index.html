@@ -3,43 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quickbook Studio - Localhost:4455</title>
+  <title>QuickBook Studio - Admin Panel</title>
   
-  <!-- Fonts & Dependencies -->
+  <!-- Typography & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
+    /* ==========================================================================
+       FLAT MINIMALIST WORDPRESS-INSPIRED DESIGN SYSTEM
+       No gradients, no box-shadows, clean 1px solid borders.
+       ========================================================================== */
     :root {
-      --bg-dark: #090d16;
-      --bg-card: #111726;
-      --bg-card-hover: #182235;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-bright: rgba(255, 255, 255, 0.16);
+      --bg-main: #f6f7f7;
+      --bg-panel: #ffffff;
+      --bg-sidebar: #ffffff;
+      --bg-subtle: #f0f0f1;
+      --bg-hover: #f6f7f7;
       
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --text-main: #1d2327;
+      --text-muted: #646970;
+      --text-light: #8c8f94;
       
-      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      --accent-solid: #6366f1;
-      --accent-glow: rgba(99, 102, 241, 0.25);
+      --border-color: #dcdcde;
+      --border-dark: #c3c4c7;
       
-      --success: #10b981;
-      --success-glow: rgba(16, 185, 129, 0.2);
-      --danger: #ef4444;
-      --danger-glow: rgba(239, 68, 68, 0.2);
+      --accent-color: #2271b1;
+      --accent-hover: #135e96;
+      --accent-light: #f0f6fc;
       
-      --sidebar-width: 330px;
+      --danger-color: #d63638;
+      --danger-hover: #b32d2e;
+      
+      --success-color: #008a20;
+      
+      --sidebar-width: 290px;
+      --header-height: 54px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-dark);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-main);
       color: var(--text-main);
       height: 100vh;
       display: flex;
@@ -48,377 +58,389 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Custom Scrollbar */
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); }
+    ::-webkit-scrollbar-thumb { background: #c3c4c7; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #8c8f94; }
 
-    /* Header Bar */
-    .header {
-      height: 60px;
-      background: rgba(17, 23, 38, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--surface-border);
+    /* ==========================================================================
+       TOP APP HEADER
+       ========================================================================== */
+    .app-header {
+      height: var(--header-height);
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.5rem;
-      z-index: 20;
+      padding: 0 1.25rem;
+      z-index: 100;
+      flex-shrink: 0;
     }
 
-    .brand-group {
+    .brand-section {
       display: flex;
       align-items: center;
       gap: 0.85rem;
     }
 
     .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      background: var(--accent-gradient);
+      width: 32px;
+      height: 32px;
+      background: var(--bg-panel);
+      border: 1px solid var(--accent-color);
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      box-shadow: 0 0 16px var(--accent-glow);
+      color: var(--accent-color);
+      font-size: 1.25rem;
     }
 
     .brand-title {
+      font-size: 1rem;
       font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
-      color: #ffffff;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: 20px;
+      gap: 0.35rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
       font-size: 0.75rem;
       font-weight: 600;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      color: var(--success);
+      background: #edfaef;
+      border: 1px solid #b8e6c1;
+      color: var(--success-color);
     }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 8px var(--success);
-    }
-
-    .nav-actions {
+    /* Navigation Tabs */
+    .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.25rem;
+      background: var(--bg-subtle);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
     }
 
-    .theme-dropdown-wrapper {
-      position: relative;
-    }
-
-    .theme-select {
-      appearance: none;
-      background: var(--bg-card);
-      color: var(--text-main);
-      border: 1px solid var(--surface-border);
-      padding: 0.45rem 2.2rem 0.45rem 0.85rem;
-      border-radius: 8px;
-      font-size: 0.82rem;
+    .nav-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 4px;
+      font-size: 0.83rem;
       font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.2s ease;
-    }
-
-    .theme-select:hover {
-      border-color: var(--surface-border-bright);
-      background: var(--bg-card-hover);
-    }
-
-    .theme-select:focus {
-      outline: none;
-      border-color: var(--accent-solid);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .theme-chevron {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      font-size: 0.7rem;
       color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
 
-    /* Buttons */
+    .nav-tab-btn i { font-size: 1.1rem; }
+
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-tab-btn.active {
+      color: var(--accent-color);
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Action Buttons */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.45rem;
-      padding: 0.45rem 0.95rem;
-      border-radius: 8px;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 4px;
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: inherit;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
       white-space: nowrap;
     }
 
-    .btn-gradient {
-      background: var(--accent-gradient);
+    .btn i { font-size: 1.05rem; }
+
+    .btn-primary {
+      background: var(--accent-color);
       color: #ffffff;
-      box-shadow: 0 2px 10px var(--accent-glow);
-    }
-    .btn-gradient:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px var(--accent-glow);
+      border-color: var(--accent-color);
     }
 
-    .btn-glass {
-      background: var(--bg-card);
-      border-color: var(--surface-border);
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-outline {
+      background: var(--bg-panel);
       color: var(--text-main);
-    }
-    .btn-glass:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--surface-border-bright);
-      color: #fff;
+      border-color: var(--border-color);
     }
 
-    .btn-subtle {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-muted);
-      border-color: var(--surface-border);
-    }
-    .btn-subtle:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+    .btn-outline:hover {
+      background: var(--bg-subtle);
+      border-color: var(--border-dark);
     }
 
-    /* App Workspace Layout */
-    .app-workspace {
+    .btn-danger-outline {
+      background: var(--bg-panel);
+      color: var(--danger-color);
+      border-color: var(--border-color);
+    }
+
+    .btn-danger-outline:hover {
+      background: #fcf2f2;
+      border-color: var(--danger-color);
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.55rem;
+      font-size: 0.78rem;
+    }
+
+    /* ==========================================================================
+       MAIN CONTAINER & TAB VIEWS
+       ========================================================================== */
+    .app-body {
       flex: 1;
       display: flex;
-      height: calc(100vh - 60px);
       overflow: hidden;
+      position: relative;
     }
 
-    /* Sidebar Tree */
+    .tab-view {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tab-view.active {
+      display: flex;
+    }
+
+    /* ==========================================================================
+       TAB 1: ARTICLES EDITOR
+       ========================================================================== */
+    .editor-layout {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Sidebar */
     .sidebar {
       width: var(--sidebar-width);
-      background: var(--bg-card);
-      border-right: 1px solid var(--surface-border);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
     }
 
     .sidebar-header {
-      padding: 1rem 1.25rem 0.75rem;
-      border-bottom: 1px solid var(--surface-border);
+      padding: 0.85rem;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.6rem;
+      background: var(--bg-subtle);
     }
 
-    .sidebar-header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .search-box {
+      position: relative;
+      width: 100%;
     }
 
-    .sidebar-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-dim);
+    .search-box i {
+      position: absolute;
+      left: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 1rem;
     }
 
     .search-input {
       width: 100%;
-      background: var(--bg-dark);
-      border: 1px solid var(--surface-border);
+      padding: 0.35rem 0.6rem 0.35rem 2rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-panel);
+      font-size: 0.82rem;
       color: var(--text-main);
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
       font-family: inherit;
     }
+
     .search-input:focus {
       outline: none;
-      border-color: var(--accent-solid);
+      border-color: var(--accent-color);
     }
 
-    .tree-scroll {
+    .sidebar-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .sidebar-actions .btn {
+      flex: 1;
+    }
+
+    .tree-container {
       flex: 1;
       overflow-y: auto;
-      padding: 0.75rem 0.6rem;
+      padding: 0.5rem 0;
     }
 
-    .tree-chapter-group {
-      margin-bottom: 0.85rem;
-    }
-
-    .chapter-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.45rem 0.65rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--text-main);
-      transition: background 0.15s ease;
-    }
-    .chapter-heading:hover {
-      background: var(--bg-card-hover);
-    }
-
-    .tree-node {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.4rem 0.65rem 0.4rem 1.5rem;
-      border-radius: 6px;
-      font-size: 0.82rem;
+    .tree-chapter-title {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: var(--text-muted);
-      cursor: pointer;
-      margin-top: 2px;
-      transition: all 0.15s ease;
-      position: relative;
-    }
-
-    .tree-node:hover {
-      background: var(--bg-card-hover);
-      color: #fff;
-    }
-
-    .tree-node.active {
-      background: rgba(99, 102, 241, 0.14);
-      color: #818cf8;
-      font-weight: 600;
-    }
-
-    .tree-node.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 6px;
-      bottom: 6px;
-      width: 3px;
-      border-radius: 2px;
-      background: var(--accent-gradient);
-    }
-
-    .node-actions {
-      display: none;
-      gap: 0.2rem;
-    }
-
-    .tree-node:hover .node-actions, .chapter-heading:hover .node-actions {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      margin-top: 0.5rem;
+      background: #fafafa;
     }
 
-    .icon-action {
-      background: none;
-      border: none;
-      color: var(--text-dim);
-      padding: 0.15rem 0.35rem;
-      border-radius: 4px;
+    .tree-chapter-title:first-child {
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.85rem 0.45rem 1.25rem;
+      font-size: 0.83rem;
+      color: var(--text-main);
       cursor: pointer;
-      font-size: 0.8rem;
-    }
-    .icon-action:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
+      border-left: 3px solid transparent;
+      transition: background 0.1s ease;
     }
 
-    /* Main Content Area */
-    .editor-container {
+    .tree-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .tree-item.active {
+      background: var(--accent-light);
+      border-left-color: var(--accent-color);
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+
+    .tree-item-title {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .tree-item-title i {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .tree-item.active .tree-item-title i {
+      color: var(--accent-color);
+    }
+
+    /* Editor Workspace */
+    .editor-workspace {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: var(--bg-dark);
+      background: var(--bg-panel);
+      overflow: hidden;
     }
 
-    .editor-header {
-      padding: 1rem 1.5rem;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--surface-border);
+    .workspace-meta {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-panel);
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.4rem;
     }
 
-    .meta-row {
+    .meta-path {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 0.35rem;
+    }
+
+    .meta-inputs {
+      display: flex;
+      gap: 0.75rem;
     }
 
     .input-title {
       flex: 2;
-      background: var(--bg-dark);
-      border: 1px solid var(--surface-border);
-      color: #fff;
-      padding: 0.55rem 0.85rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.35rem 0.65rem;
+      color: var(--text-main);
       font-family: inherit;
-    }
-    .input-title:focus {
-      outline: none;
-      border-color: var(--accent-solid);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .input-path-readonly {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      color: var(--text-dim);
-      padding: 0.55rem 0.85rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-family: 'JetBrains Mono', monospace;
     }
 
     .input-desc {
-      width: 100%;
-      background: var(--bg-dark);
-      border: 1px solid var(--surface-border);
-      color: var(--text-main);
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      flex: 3;
+      font-size: 0.88rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.35rem 0.65rem;
+      color: var(--text-muted);
       font-family: inherit;
     }
-    .input-desc:focus {
+
+    .input-title:focus, .input-desc:focus {
       outline: none;
-      border-color: var(--accent-solid);
+      border-color: var(--accent-color);
     }
 
-    /* Editor Toolbar */
-    .toolbar-bar {
-      padding: 0.45rem 1.5rem;
-      background: rgba(255, 255, 255, 0.015);
-      border-bottom: 1px solid var(--surface-border);
+    /* Toolbar */
+    .editor-toolbar {
+      padding: 0.35rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -427,616 +449,1547 @@
     .toolbar-group {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.2rem;
     }
 
-    .t-btn {
-      background: transparent;
+    .tool-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
       border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 0.25rem 0.55rem;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
-      transition: all 0.15s ease;
-    }
-    .t-btn:hover {
-      background: var(--surface-border);
-      color: #fff;
-    }
-
-    .view-toggle-group {
+      background: transparent;
+      color: var(--text-main);
       display: flex;
-      background: var(--bg-dark);
-      border: 1px solid var(--surface-border);
-      border-radius: 6px;
-      padding: 2px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
     }
 
-    .view-toggle-btn {
-      padding: 0.25rem 0.65rem;
+    .tool-btn:hover {
+      background: var(--bg-panel);
+      border-color: var(--border-color);
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border-color);
+      margin: 0 0.35rem;
+    }
+
+    .view-mode-selector {
+      display: flex;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      overflow: hidden;
+    }
+
+    .mode-btn {
+      padding: 0.25rem 0.6rem;
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-dim);
-      background: transparent;
       border: none;
-      border-radius: 4px;
+      background: transparent;
       cursor: pointer;
-    }
-    .view-toggle-btn.active {
-      background: var(--bg-card-hover);
-      color: #fff;
+      color: var(--text-muted);
     }
 
-    /* Split Workspace Pane */
-    .pane-split {
+    .mode-btn.active {
+      background: var(--accent-color);
+      color: #ffffff;
+    }
+
+    /* Content Area */
+    .content-panes {
       flex: 1;
       display: flex;
       overflow: hidden;
     }
 
-    .editor-pane, .preview-pane {
+    .pane-code {
       flex: 1;
       height: 100%;
-      overflow-y: auto;
+      border-right: 1px solid var(--border-color);
+      display: flex;
     }
 
-    .editor-pane {
-      border-right: 1px solid var(--surface-border);
-    }
-
-    textarea.code-textarea {
+    .code-textarea {
       width: 100%;
       height: 100%;
-      background: var(--bg-dark);
-      color: #e2e8f0;
       border: none;
-      padding: 1.5rem;
+      padding: 1rem 1.25rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.92rem;
-      line-height: 1.65;
-      resize: none;
-    }
-    textarea.code-textarea:focus { outline: none; }
-
-    .preview-pane {
-      padding: 1.75rem 2rem;
-      background: #0b0f19;
-      color: #cbd5e1;
-    }
-
-    /* Markdown Rendered Preview Styling */
-    .preview-body h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin: 1rem 0 0.75rem; border-bottom: 1px solid var(--surface-border); padding-bottom: 0.4em; }
-    .preview-body h2 { font-size: 1.4rem; font-weight: 600; color: #f1f5f9; margin: 1.25rem 0 0.6rem; border-bottom: 1px solid var(--surface-border); padding-bottom: 0.3em; }
-    .preview-body h3 { font-size: 1.15rem; font-weight: 600; color: #e2e8f0; margin: 1rem 0 0.5rem; }
-    .preview-body p { line-height: 1.7; margin-bottom: 1rem; color: #cbd5e1; }
-    .preview-body ul, .preview-body ol { margin-bottom: 1rem; padding-left: 1.5rem; line-height: 1.6; }
-    .preview-body code { background: rgba(255,255,255,0.08); color: #a5b4fc; padding: 0.2em 0.4em; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 85%; }
-    .preview-body pre { background: #111726; border: 1px solid var(--surface-border); padding: 1.1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.2rem; }
-    .preview-body pre code { background: transparent; padding: 0; color: #e2e8f0; }
-    .preview-body blockquote { border-left: 3px solid var(--accent-solid); padding-left: 1rem; color: var(--text-muted); margin-bottom: 1rem; font-style: italic; }
-
-    /* Modal Overlay */
-    .modal-backdrop {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(4, 7, 13, 0.75);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-    .modal-backdrop.active { display: flex; }
-
-    .modal-card {
-      background: var(--bg-card);
-      border: 1px solid var(--surface-border-bright);
-      border-radius: 12px;
-      width: 520px;
-      max-width: 92vw;
-      padding: 1.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes modalPop {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .field-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    /* Toast Notification */
-    .toast-msg {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--bg-card);
-      border: 1px solid var(--accent-solid);
-      color: #fff;
-      padding: 0.85rem 1.4rem;
-      border-radius: 10px;
       font-size: 0.88rem;
-      font-weight: 500;
-      display: none;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      z-index: 200;
+      line-height: 1.6;
+      color: var(--text-main);
+      background: var(--bg-panel);
+      resize: none;
+      outline: none;
     }
-    .toast-msg.active {
+
+    .pane-preview {
+      flex: 1;
+      height: 100%;
+      padding: 1.25rem 2rem;
+      overflow-y: auto;
+      background: var(--bg-panel);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    /* Markdown Typography Preview */
+    .pane-preview h1 { font-size: 1.6rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; color: #1d2327; }
+    .pane-preview h2 { font-size: 1.3rem; margin: 1.2rem 0 0.6rem 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.2rem; color: #1d2327; }
+    .pane-preview h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem 0; color: #1d2327; }
+    .pane-preview p { margin-bottom: 0.85rem; color: #2c3338; }
+    .pane-preview code { font-family: 'JetBrains Mono', monospace; background: var(--bg-subtle); border: 1px solid var(--border-color); padding: 0.15rem 0.35rem; border-radius: 3px; font-size: 0.85em; color: #1d2327; }
+    .pane-preview pre { background: #1d2327; color: #f0f0f1; padding: 0.85rem; border-radius: 4px; overflow-x: auto; margin-bottom: 1rem; }
+    .pane-preview pre code { background: transparent; border: none; color: inherit; padding: 0; }
+    .pane-preview blockquote { border-left: 3px solid var(--accent-color); padding-left: 0.85rem; margin: 0.85rem 0; color: var(--text-muted); }
+    .pane-preview ul, .pane-preview ol { padding-left: 1.25rem; margin-bottom: 0.85rem; }
+    .pane-preview li { margin-bottom: 0.25rem; }
+
+    /* ==========================================================================
+       TAB 2: THEME GALLERY (FIREFOX-STYLE CARDS WITH EXACT THEME PREVIEW COLORS)
+       ========================================================================== */
+    .gallery-layout {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 2rem 3rem;
+      background: var(--bg-main);
+    }
+
+    .section-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .section-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
     }
+
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.5rem;
+      padding-bottom: 3rem;
+    }
+
+    /* Firefox Style Theme Card */
+    .theme-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .theme-card:hover {
+      border-color: var(--border-dark);
+      transform: translateY(-2px);
+    }
+
+    .theme-card.active {
+      border: 2px solid var(--accent-color);
+    }
+
+    /* Dynamic Skeleton Preview Box (Uses Theme Exact Variables) */
+    .skeleton-preview {
+      height: 165px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--sk-border, var(--border-color));
+      background: var(--sk-bg, #ffffff);
+      color: var(--sk-text, #1d2327);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .sk-header {
+      height: 16px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.5rem;
+      background: var(--sk-nav, #f6f8fa);
+      border: 1px solid var(--sk-border, #d0d7de);
+    }
+
+    .sk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sk-accent, #2563eb); }
+    .sk-nav-line { width: 45px; height: 4px; border-radius: 2px; background: var(--sk-muted, #8c8f94); }
+
+    .sk-body {
+      flex: 1;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .sk-sidebar {
+      width: 55px;
+      border-radius: 3px;
+      padding: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      background: var(--sk-nav, #f6f8fa);
+      border: 1px solid var(--sk-border, #d0d7de);
+    }
+
+    .sk-side-line { height: 4px; border-radius: 2px; background: var(--sk-muted, #8c8f94); opacity: 0.7; }
+
+    .sk-content {
+      flex: 1;
+      border-radius: 3px;
+      padding: 0.45rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      background: var(--sk-bg, #ffffff);
+      border: 1px solid var(--sk-border, #d0d7de);
+    }
+
+    .sk-title { height: 10px; width: 65%; border-radius: 2px; background: var(--sk-accent, #2563eb); }
+    .sk-line { height: 5px; width: 90%; border-radius: 2px; background: var(--sk-text, #1d2327); opacity: 0.7; }
+    .sk-line.short { width: 55%; }
+    .sk-codebox { height: 30px; border-radius: 3px; margin-top: 0.2rem; background: var(--sk-code, #f6f8fa); border: 1px solid var(--sk-border, #d0d7de); }
+
+    .theme-card-body {
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-panel);
+    }
+
+    .theme-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .theme-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: capitalize;
+    }
+
+    .theme-tag {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .theme-active-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--accent-light);
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+    }
+
+    /* ==========================================================================
+       TAB 3: EXTENSIONS TAB
+       ========================================================================== */
+    .extensions-layout {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 2rem 3rem;
+      background: var(--bg-main);
+    }
+
+    .extensions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-width: 720px;
+    }
+
+    .extension-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .extension-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .ext-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .ext-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--accent-light);
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .ext-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .ext-name-badge {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .ext-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .ext-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: var(--bg-subtle);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--accent-color);
+    }
+
+    .ext-form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .ext-field-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* ==========================================================================
+       TAB 4: SETTINGS FORM
+       ========================================================================== */
+    .settings-layout {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 2rem 3rem;
+      background: var(--bg-main);
+    }
+
+    .settings-card {
+      max-width: 680px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.45rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-panel);
+      font-size: 0.88rem;
+      color: var(--text-main);
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       MODALS & TOASTS
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      width: 420px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.6rem;
+    }
+
+    .modal-title { font-size: 1.05rem; font-weight: 700; }
+
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 1000;
+    }
+
+    .toast {
+      padding: 0.6rem 1rem;
+      background: #1d2327;
+      color: #ffffff;
+      font-size: 0.83rem;
+      font-weight: 600;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .toast.success { border-left-color: var(--success-color); }
+    .toast.error { border-left-color: var(--danger-color); }
   </style>
 </head>
 <body>
 
-  <!-- Top Header Navigation -->
-  <header class="header">
-    <div class="brand-group">
-      <div class="brand-logo">📖</div>
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo">
+        <i class='bx bxs-book-content'></i>
+      </div>
       <div class="brand-title">
-        Quickbook Studio
-        <span class="status-badge">
-          <span class="status-dot"></span>
-          <span id="bookTitleBadge">Loading...</span>
-        </span>
+        QuickBook Studio
+        <span class="status-badge"><i class='bx bx-check-circle'></i> localhost:4455</span>
       </div>
     </div>
 
-    <div class="nav-actions">
-      <div class="theme-dropdown-wrapper">
-        <select class="theme-select" id="themeSelect" onchange="updateTheme(this.value)">
-          <option value="dracula">🧛 Dracula Theme</option>
-          <option value="dark">🌙 Dark Mode</option>
-          <option value="default">☀️ Default (Light)</option>
-          <option value="blue">🔷 Pastel Blue</option>
-          <option value="red">🌹 Pastel Red</option>
-          <option value="green">🌿 Pastel Green</option>
-          <option value="coffee">☕ Pastel Coffee</option>
-        </select>
-        <span class="theme-chevron">▼</span>
-      </div>
+    <!-- Central View Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" data-tab="tab-articles">
+        <i class='bx bx-edit-alt'></i> Articles
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-themes">
+        <i class='bx bx-palette'></i> Themes
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-layouts">
+        <i class='bx bx-layout'></i> Layouts
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-extensions">
+        <i class='bx bx-extension'></i> Extensions
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-settings">
+        <i class='bx bx-cog'></i> Settings
+      </button>
+    </nav>
 
-      <button class="btn btn-glass" onclick="openSettingsModal()">⚙️ Settings</button>
-      <button class="btn btn-gradient" onclick="generateSite()">⚡ Generate Dist</button>
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button class="btn btn-outline" id="btn-build">
+        <i class='bx bx-rocket'></i> Build Site
+      </button>
+      <button class="btn btn-primary" id="btn-preview">
+        <i class='bx bx-show'></i> Open Preview
+      </button>
     </div>
   </header>
 
-  <!-- Main App Workspace -->
-  <div class="app-workspace">
-    
-    <!-- Left Sidebar File Explorer -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-header-top">
-          <span class="sidebar-label">Explorer</span>
-          <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-subtle" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="promptNewChapter()">+ Chapter</button>
-            <button class="btn btn-gradient" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="promptNewArticle()">+ Article</button>
+  <!-- Main Body Views -->
+  <main class="app-body">
+
+    <!-- TAB 1: ARTICLES EDITOR -->
+    <section class="tab-view active" id="tab-articles">
+      <div class="editor-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="search-box">
+              <i class='bx bx-search'></i>
+              <input type="text" id="tree-search" class="search-input" placeholder="Search articles...">
+            </div>
+            <div class="sidebar-actions">
+              <button class="btn btn-outline btn-sm" id="btn-new-chapter">
+                <i class='bx bx-folder-plus'></i> + Chapter
+              </button>
+              <button class="btn btn-outline btn-sm" id="btn-new-article">
+                <i class='bx bx-file-blank'></i> + Article
+              </button>
+            </div>
+          </div>
+
+          <div class="tree-container" id="articles-tree">
+            <!-- Article & Chapter tree rendered dynamically via JS -->
+          </div>
+        </aside>
+
+        <!-- Editor Workspace -->
+        <div class="editor-workspace">
+          <!-- Article Metadata -->
+          <div class="workspace-meta">
+            <div class="meta-path">
+              <i class='bx bx-folder'></i> <span id="current-file-path">No article selected</span>
+            </div>
+            <div class="meta-inputs">
+              <input type="text" id="article-title" class="input-title" placeholder="Article Title...">
+              <input type="text" id="article-description" class="input-desc" placeholder="Short description / summary...">
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="editor-toolbar">
+            <div class="toolbar-group">
+              <button class="tool-btn" data-cmd="bold" title="Bold"><i class='bx bx-bold'></i></button>
+              <button class="tool-btn" data-cmd="italic" title="Italic"><i class='bx bx-italic'></i></button>
+              <div class="toolbar-divider"></div>
+              <button class="tool-btn" data-cmd="h1" title="Heading 1"><i class='bx bx-heading'></i>1</button>
+              <button class="tool-btn" data-cmd="h2" title="Heading 2"><i class='bx bx-heading'></i>2</button>
+              <div class="toolbar-divider"></div>
+              <button class="tool-btn" data-cmd="code" title="Inline Code"><i class='bx bx-code'></i></button>
+              <button class="tool-btn" data-cmd="quote" title="Quote"><i class='bx bx-blockquote'></i></button>
+              <button class="tool-btn" data-cmd="link" title="Link"><i class='bx bx-link'></i></button>
+              <button class="tool-btn" data-cmd="list" title="List"><i class='bx bx-list-ul'></i></button>
+            </div>
+
+            <div class="toolbar-group">
+              <div class="view-mode-selector">
+                <button class="mode-btn active" data-mode="split">Split</button>
+                <button class="mode-btn" data-mode="code">Code</button>
+                <button class="mode-btn" data-mode="preview">Preview</button>
+              </div>
+
+              <div class="toolbar-divider"></div>
+
+              <button class="btn btn-danger-outline btn-sm" id="btn-delete-article">
+                <i class='bx bx-trash'></i> Delete
+              </button>
+              <button class="btn btn-primary btn-sm" id="btn-save-article">
+                <i class='bx bx-save'></i> Save Changes
+              </button>
+            </div>
+          </div>
+
+          <!-- Content Panes -->
+          <div class="content-panes">
+            <div class="pane-code" id="pane-code">
+              <textarea id="article-editor" class="code-textarea" placeholder="Write your markdown content here..."></textarea>
+            </div>
+            <div class="pane-preview" id="article-preview">
+              <!-- Rendered preview HTML -->
+            </div>
           </div>
         </div>
-        <input type="text" class="search-input" id="searchInput" placeholder="Filter articles..." oninput="filterTree()" />
       </div>
+    </section>
 
-      <div class="tree-scroll" id="treeContainer">
-        <!-- Chapters and Articles tree loaded here -->
-      </div>
-    </aside>
-
-    <!-- Center & Right Workspace -->
-    <main class="editor-container">
-      <div class="editor-header">
-        <div class="meta-row">
-          <input type="text" class="input-title" id="articleTitleInput" placeholder="Article Title..." />
-          <input type="text" class="input-path-readonly" id="articlePathInput" readonly placeholder="Path..." />
-          <button class="btn btn-gradient" onclick="saveCurrentArticle()">💾 Save (Ctrl+S)</button>
-        </div>
-        <input type="text" class="input-desc" id="articleDescInput" placeholder="Brief summary or description..." />
-      </div>
-
-      <!-- Formatting Toolbar -->
-      <div class="toolbar-bar">
-        <div class="toolbar-group">
-          <button class="t-btn" title="Bold" onclick="insertSyntax('**', '**')"><b>B</b></button>
-          <button class="t-btn" title="Italic" onclick="insertSyntax('*', '*')"><i>I</i></button>
-          <button class="t-btn" title="Heading 1" onclick="insertSyntax('# ', '')">H1</button>
-          <button class="t-btn" title="Heading 2" onclick="insertSyntax('## ', '')">H2</button>
-          <button class="t-btn" title="Inline Code" onclick="insertSyntax('`', '`')">Code</button>
-          <button class="t-btn" title="Code Block" onclick="insertSyntax('```javascript\n', '\n```')">Block</button>
-          <button class="t-btn" title="Link" onclick="insertSyntax('[', '](https://)')">Link</button>
-          <button class="t-btn" title="Bullet List" onclick="insertSyntax('- ', '')">List</button>
-          <button class="t-btn" title="Quote" onclick="insertSyntax('> ', '')">Quote</button>
+    <!-- TAB 2: THEMES GALLERY -->
+    <section class="tab-view" id="tab-themes">
+      <div class="gallery-layout">
+        <div class="section-header">
+          <h2 class="section-title"><i class='bx bx-palette'></i> QuickBook Themes</h2>
+          <p class="section-subtitle">Select a visual theme for your handbook. Click any card to apply theme instantly.</p>
         </div>
 
-        <div class="view-toggle-group">
-          <button class="view-toggle-btn active" id="btnModeSplit" onclick="setMode('split')">Split</button>
-          <button class="view-toggle-btn" id="btnModeEditor" onclick="setMode('editor')">Editor</button>
-          <button class="view-toggle-btn" id="btnModePreview" onclick="setMode('preview')">Preview</button>
+        <div class="themes-grid" id="themes-gallery">
+          <!-- Firefox-style Theme Cards rendered dynamically via JS -->
         </div>
       </div>
+    </section>
 
-      <!-- Split View Workspace -->
-      <div class="pane-split" id="paneSplit">
-        <div class="editor-pane" id="editorPane">
-          <textarea class="code-textarea" id="markdownTextarea" placeholder="Write markdown content here..." oninput="updatePreview()"></textarea>
+    <!-- TAB 3: LAYOUTS TAB -->
+    <section class="tab-view" id="tab-layouts">
+      <div class="gallery-layout">
+        <div class="section-header">
+          <h2 class="section-title"><i class='bx bx-layout'></i> Layout Plugins</h2>
+          <p class="section-subtitle">Select a layout plugin for your Table of Contents and page templates. Click any card to apply layout.</p>
         </div>
-        <div class="preview-pane" id="previewPane">
-          <div class="preview-body" id="previewBody">
-            <em style="color: var(--text-dim)">Select an article from the explorer on the left to start editing...</em>
+
+        <div class="themes-grid" id="layouts-gallery">
+          <!-- Layout Cards rendered dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: EXTENSIONS TAB -->
+    <section class="tab-view" id="tab-extensions">
+      <div class="extensions-layout">
+        <div class="section-header">
+          <h2 class="section-title"><i class='bx bx-extension'></i> JavaScript Extensions & Plugins</h2>
+          <p class="section-subtitle">Manage extension settings and enable/disable plugins from `extensions.config.json`.</p>
+        </div>
+
+        <div class="extensions-grid" id="extensions-list">
+          <!-- Extensions rendered dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: SETTINGS FORM -->
+    <section class="tab-view" id="tab-settings">
+      <div class="settings-layout">
+        <div class="section-header">
+          <h2 class="section-title"><i class='bx bx-cog'></i> Handbook Settings</h2>
+          <p class="section-subtitle">Configure global handbook metadata and configurations.</p>
+        </div>
+
+        <div class="settings-card">
+          <div class="form-group">
+            <label class="form-label">Book Title</label>
+            <input type="text" id="cfg-title" class="form-input" placeholder="e.g. My QuickBook Guide">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subtitle</label>
+            <input type="text" id="cfg-subtitle" class="form-input" placeholder="A step-by-step documentation guide">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Author Name</label>
+            <input type="text" id="cfg-author" class="form-input" placeholder="e.g. John Doe">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Author GitHub Link</label>
+            <input type="text" id="cfg-author-github" class="form-input" placeholder="https://github.com/username">
+            <span class="form-help">Optional: Renders clickable profile link in footer badge.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Book Description</label>
+            <textarea id="cfg-description" class="form-textarea" rows="3" placeholder="Brief description of your handbook..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">GitHub Repository URL</label>
+            <input type="text" id="cfg-github" class="form-input" placeholder="https://github.com/username/repo">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Language</label>
+            <input type="text" id="cfg-language" class="form-input" value="en">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Active Theme</label>
+            <select id="cfg-theme" class="form-select">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div style="margin-top: 0.5rem;">
+            <button class="btn btn-primary" id="btn-save-settings">
+              <i class='bx bx-save'></i> Save Settings
+            </button>
           </div>
         </div>
       </div>
-    </main>
+    </section>
 
-  </div>
+  </main>
 
-  <!-- Settings Modal -->
-  <div class="modal-backdrop" id="settingsModal">
-    <div class="modal-card">
-      <div class="modal-title">⚙️ Project Configuration</div>
-      
-      <div class="field-group">
-        <label class="field-label">Book Title</label>
-        <input type="text" class="input-title" id="cfgTitle" style="font-size: 0.9rem;" />
+  <!-- Modals -->
+  <!-- New Chapter Modal -->
+  <div class="modal-overlay" id="modal-chapter">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class='bx bx-folder-plus'></i> New Chapter</h3>
+        <button class="tool-btn" id="modal-chapter-close"><i class='bx bx-x'></i></button>
       </div>
-
-      <div class="field-group">
-        <label class="field-label">Subtitle</label>
-        <input type="text" class="input-title" id="cfgSubtitle" style="font-size: 0.9rem;" />
+      <div class="form-group">
+        <label class="form-label">Chapter Number</label>
+        <input type="number" id="new-chap-num" class="form-input" value="1" min="1">
       </div>
-
-      <div class="field-group">
-        <label class="field-label">Author Name</label>
-        <input type="text" class="input-title" id="cfgAuthor" style="font-size: 0.9rem;" />
+      <div class="form-group">
+        <label class="form-label">Chapter Name</label>
+        <input type="text" id="new-chap-name" class="form-input" placeholder="e.g. Getting Started">
       </div>
-
-      <div class="field-group">
-        <label class="field-label">Author GitHub URL (Optional)</label>
-        <input type="text" class="input-title" id="cfgAuthorGithub" placeholder="https://github.com/username" style="font-size: 0.9rem;" />
-      </div>
-
-      <div class="field-group">
-        <label class="field-label">Description</label>
-        <input type="text" class="input-title" id="cfgDescription" style="font-size: 0.9rem;" />
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.5rem;">
-        <button class="btn btn-glass" onclick="closeSettingsModal()">Cancel</button>
-        <button class="btn btn-gradient" onclick="saveSettingsForm()">Save Settings</button>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+        <button class="btn btn-outline" id="modal-chapter-cancel">Cancel</button>
+        <button class="btn btn-primary" id="modal-chapter-submit">Create Chapter</button>
       </div>
     </div>
   </div>
 
-  <!-- Notification Toast -->
-  <div class="toast-msg" id="toast">
-    <span id="toastIcon">✨</span>
-    <span id="toastText">Notification</span>
+  <!-- New Article Modal -->
+  <div class="modal-overlay" id="modal-article">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class='bx bx-file-blank'></i> New Article</h3>
+        <button class="tool-btn" id="modal-article-close"><i class='bx bx-x'></i></button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parent Chapter (Optional)</label>
+        <select id="new-art-chapter" class="form-select">
+          <option value="">Top-Level Article (No chapter)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Article Number (for chapter lessons)</label>
+        <input type="number" id="new-art-num" class="form-input" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Article Name / Title</label>
+        <input type="text" id="new-art-title" class="form-input" placeholder="e.g. Introduction">
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem;">
+        <button class="btn btn-outline" id="modal-article-cancel">Cancel</button>
+        <button class="btn btn-primary" id="modal-article-submit">Create Article</button>
+      </div>
+    </div>
   </div>
 
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript App Logic -->
   <script>
-    let currentPath = '';
-    let currentConfig = {};
-    let articlesData = { topLevel: [], chapters: [] };
+    // State Manager
+    const state = {
+      config: {},
+      layouts: [],
+      extensions: [],
+      extensionsConfig: {},
+      tree: { topLevel: [], chapters: [] },
+      currentPath: null,
+      currentArticle: { relativePath: '', title: '', description: '', content: '' },
+      viewMode: 'split'
+    };
 
-    function showToast(msg, icon = '✨') {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastText').innerText = msg;
-      document.getElementById('toastIcon').innerText = icon;
-      toast.classList.add('active');
-      setTimeout(() => { toast.classList.remove('active'); }, 3000);
+    // DOM Elements
+    const elements = {
+      navTabs: document.querySelectorAll('.nav-tab-btn'),
+      tabViews: document.querySelectorAll('.tab-view'),
+      treeContainer: document.getElementById('articles-tree'),
+      treeSearch: document.getElementById('tree-search'),
+      currentFilePath: document.getElementById('current-file-path'),
+      articleTitle: document.getElementById('article-title'),
+      articleDesc: document.getElementById('article-description'),
+      articleEditor: document.getElementById('article-editor'),
+      articlePreview: document.getElementById('article-preview'),
+      paneCode: document.getElementById('pane-code'),
+      panePreview: document.getElementById('pane-preview'),
+      modeBtns: document.querySelectorAll('.mode-btn'),
+      themesGallery: document.getElementById('themes-gallery'),
+      layoutsGallery: document.getElementById('layouts-gallery'),
+      extensionsList: document.getElementById('extensions-list'),
+      cfgTitle: document.getElementById('cfg-title'),
+      cfgSubtitle: document.getElementById('cfg-subtitle'),
+      cfgAuthor: document.getElementById('cfg-author'),
+      cfgAuthorGithub: document.getElementById('cfg-author-github'),
+      cfgDescription: document.getElementById('cfg-description'),
+      cfgGithub: document.getElementById('cfg-github'),
+      cfgLanguage: document.getElementById('cfg-language'),
+      cfgTheme: document.getElementById('cfg-theme'),
+      btnSaveSettings: document.getElementById('btn-save-settings'),
+      btnSaveArticle: document.getElementById('btn-save-article'),
+      btnDeleteArticle: document.getElementById('btn-delete-article'),
+      btnBuild: document.getElementById('btn-build'),
+      btnPreview: document.getElementById('btn-preview')
+    };
+
+    // Theme Exact Colors Mapping for Skeleton Preview
+    const themePalettes = {
+      default: { bg: '#ffffff', nav: '#f6f8fa', text: '#24292f', muted: '#57606a', border: '#d0d7de', accent: '#0969da', code: '#f6f8fa' },
+      dark: { bg: '#0d1117', nav: '#161b22', text: '#c9d1d9', muted: '#8b949e', border: '#30363d', accent: '#58a6ff', code: '#161b22' },
+      dracula: { bg: '#282a36', nav: '#1e1f29', text: '#f8f8f2', muted: '#6272a4', border: '#44475a', accent: '#ff79c6', code: '#191a21' },
+      blue: { bg: '#f0f7ff', nav: '#e0f2fe', text: '#1e3a8a', muted: '#0284c7', border: '#bae6fd', accent: '#2563eb', code: '#dbeafe' },
+      red: { bg: '#fff5f5', nav: '#ffe4e6', text: '#991b1b', muted: '#be123c', border: '#fecdd3', accent: '#e11d48', code: '#ffe4e6' },
+      green: { bg: '#f0fdf4', nav: '#dcfce7', text: '#166534', muted: '#15803d', border: '#bbf7d0', accent: '#16a34a', code: '#dcfce7' },
+      coffee: { bg: '#fdfbf7', nav: '#f5ebe0', text: '#431407', muted: '#78350f', border: '#e6ccb2', accent: '#9a3412', code: '#f5ebe0' }
+    };
+
+    // Safe Markdown Renderer Helper
+    function renderMarkdown(rawText) {
+      if (!rawText) return '';
+      try {
+        const m = (window.marked && window.marked.parse) ? window.marked : (typeof marked !== 'undefined' ? marked : null);
+        if (m) {
+          if (typeof m.parse === 'function') {
+            return m.parse(rawText);
+          } else if (typeof m === 'function') {
+            return m(rawText);
+          }
+        }
+      } catch (err) {
+        console.error('Markdown rendering error:', err);
+      }
+      return rawText;
     }
 
+    // --- API Calls ---
     async function fetchConfig() {
-      const res = await fetch('/api/config');
-      currentConfig = await res.json();
-      document.getElementById('bookTitleBadge').innerText = currentConfig.title || 'Quickbook';
-      document.getElementById('themeSelect').value = currentConfig.theme || 'dark';
-
-      document.getElementById('cfgTitle').value = currentConfig.title || '';
-      document.getElementById('cfgSubtitle').value = currentConfig.subtitle || '';
-      document.getElementById('cfgAuthor').value = currentConfig.author || '';
-      document.getElementById('cfgAuthorGithub').value = currentConfig.authorGithub || '';
-      document.getElementById('cfgDescription').value = currentConfig.description || '';
+      try {
+        const res = await fetch('/api/config');
+        state.config = await res.json();
+        renderSettingsForm();
+        renderThemesGallery();
+        renderLayoutsGallery();
+      } catch (err) {
+        showToast('Error loading settings', 'error');
+      }
     }
 
-    async function updateTheme(theme) {
-      currentConfig.theme = theme;
-      await fetch('/api/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentConfig)
-      });
-      showToast(`Theme updated to ${theme}`, '🎨');
+    async function fetchLayouts() {
+      try {
+        const res = await fetch('/api/layouts');
+        const data = await res.json();
+        state.layouts = data.layouts || [];
+        renderLayoutsGallery();
+      } catch (err) {
+        showToast('Error loading layouts', 'error');
+      }
     }
 
-    async function fetchTree() {
-      const res = await fetch('/api/articles');
-      articlesData = await res.json();
-      renderTree(articlesData);
+    async function fetchExtensions() {
+      try {
+        const res = await fetch('/api/extensions');
+        const data = await res.json();
+        state.extensions = data.extensions || [];
+        state.extensionsConfig = data.config || {};
+        renderExtensionsTab();
+      } catch (err) {
+        showToast('Error loading extensions', 'error');
+      }
     }
 
-    function renderTree(data) {
-      const container = document.getElementById('treeContainer');
-      container.innerHTML = '';
-      const filter = document.getElementById('searchInput').value.toLowerCase();
+    async function fetchArticles() {
+      try {
+        const res = await fetch('/api/articles');
+        state.tree = await res.json();
+        renderArticlesTree();
+        
+        // Auto-select first article if none selected
+        if (!state.currentPath) {
+          if (state.tree.topLevel.length > 0) {
+            loadArticle(state.tree.topLevel[0].relativePath);
+          } else if (state.tree.chapters.length > 0 && state.tree.chapters[0].lessons.length > 0) {
+            loadArticle(state.tree.chapters[0].lessons[0].relativePath);
+          }
+        }
+      } catch (err) {
+        showToast('Error loading articles', 'error');
+      }
+    }
 
-      // Top-level articles
-      data.topLevel.forEach(art => {
-        if (filter && !art.title.toLowerCase().includes(filter)) return;
+    async function loadArticle(relativePath) {
+      try {
+        const res = await fetch(`/api/article?path=${encodeURIComponent(relativePath)}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
 
-        const div = document.createElement('div');
-        div.className = `tree-node ${currentPath === art.relativePath ? 'active' : ''}`;
-        div.innerHTML = `
-          <span>📄 ${art.title}</span>
-          <div class="node-actions">
-            <button class="icon-action" title="Delete Article" onclick="event.stopPropagation(); deleteArticle('${art.relativePath}')">🗑️</button>
-          </div>
-        `;
-        div.onclick = () => loadArticle(art.relativePath);
-        container.appendChild(div);
-      });
+        state.currentPath = relativePath;
+        state.currentArticle = data;
 
-      // Chapters
-      data.chapters.forEach(chap => {
-        const matchingLessons = chap.lessons.filter(l => !filter || l.title.toLowerCase().includes(filter));
-        if (filter && matchingLessons.length === 0 && !chap.name.toLowerCase().includes(filter)) return;
+        elements.currentFilePath.textContent = relativePath;
+        elements.articleTitle.value = data.title || '';
+        elements.articleDesc.value = data.description || '';
+        elements.articleEditor.value = data.content || '';
 
-        const chapGroup = document.createElement('div');
-        chapGroup.className = 'tree-chapter-group';
+        updatePreview();
+        setTimeout(updatePreview, 50);
+        renderArticlesTree();
+      } catch (err) {
+        showToast(`Failed to load article: ${err.message}`, 'error');
+      }
+    }
 
-        const header = document.createElement('div');
-        header.className = 'chapter-heading';
-        header.innerHTML = `
-          <span>📁 Chapter ${chap.number}: ${chap.name}</span>
-          <div class="node-actions">
-            <button class="icon-action" title="Add Lesson" onclick="event.stopPropagation(); promptNewLesson('${chap.number}', '${chap.dirName}')">+</button>
-            <button class="icon-action" title="Delete Chapter" onclick="event.stopPropagation(); deleteChapter('${chap.dirName}')">🗑️</button>
-          </div>
-        `;
-        chapGroup.appendChild(header);
+    async function saveArticle() {
+      if (!state.currentPath) return showToast('No article selected', 'error');
 
-        matchingLessons.forEach(les => {
-          const lesDiv = document.createElement('div');
-          lesDiv.className = `tree-node ${currentPath === les.relativePath ? 'active' : ''}`;
-          lesDiv.innerHTML = `
-            <span>📝 ${les.title}</span>
-            <div class="node-actions">
-              <button class="icon-action" title="Delete Lesson" onclick="event.stopPropagation(); deleteArticle('${les.relativePath}')">🗑️</button>
+      const payload = {
+        relativePath: state.currentPath,
+        title: elements.articleTitle.value,
+        description: elements.articleDesc.value,
+        content: elements.articleEditor.value
+      };
+
+      try {
+        const res = await fetch('/api/article', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Article saved successfully', 'success');
+          fetchArticles();
+        } else {
+          showToast(data.error || 'Save failed', 'error');
+        }
+      } catch (err) {
+        showToast('Error saving article', 'error');
+      }
+    }
+
+    async function deleteArticle() {
+      if (!state.currentPath) return;
+      if (!confirm(`Delete article "${state.currentPath}"?`)) return;
+
+      try {
+        const res = await fetch('/api/article', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ relativePath: state.currentPath })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Article deleted', 'success');
+          state.currentPath = null;
+          fetchArticles();
+        }
+      } catch (err) {
+        showToast('Error deleting article', 'error');
+      }
+    }
+
+    async function updateConfig(newSettings) {
+      try {
+        const updated = { ...state.config, ...newSettings };
+        delete updated.availableThemes; // internal
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+        const data = await res.json();
+        if (data.success) {
+          state.config = data.settings;
+          renderSettingsForm();
+          renderThemesGallery();
+          showToast(`Theme updated to "${newSettings.theme || state.config.theme}"`, 'success');
+        }
+      } catch (err) {
+        showToast('Failed to save settings', 'error');
+      }
+    }
+
+    async function saveExtensionsConfig(newExtConfig) {
+      try {
+        const res = await fetch('/api/extensions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newExtConfig)
+        });
+        const data = await res.json();
+        if (data.success) {
+          state.extensionsConfig = data.config;
+          showToast('Extension settings saved in extensions.config.json', 'success');
+          fetchExtensions();
+        }
+      } catch (err) {
+        showToast('Error saving extensions config', 'error');
+      }
+    }
+
+    async function buildSite() {
+      showToast('Generating static HTML build...', 'info');
+      try {
+        const res = await fetch('/api/generate', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Build completed successfully!', 'success');
+        } else {
+          showToast(`Build error: ${data.error}`, 'error');
+        }
+      } catch (err) {
+        showToast('Build request failed', 'error');
+      }
+    }
+
+    // --- Render Functions ---
+    function renderArticlesTree() {
+      const filter = elements.treeSearch.value.toLowerCase().trim();
+      let html = '';
+
+      // Top Level Articles
+      const filteredTop = state.tree.topLevel.filter(a => a.title.toLowerCase().includes(filter) || a.relativePath.toLowerCase().includes(filter));
+      if (filteredTop.length > 0) {
+        filteredTop.forEach(item => {
+          const isActive = item.relativePath === state.currentPath;
+          html += `
+            <div class="tree-item ${isActive ? 'active' : ''}" onclick="loadArticle('${item.relativePath}')">
+              <span class="tree-item-title">
+                <i class='bx bx-file-blank'></i> ${escapeHtml(item.title)}
+              </span>
             </div>
           `;
-          lesDiv.onclick = () => loadArticle(les.relativePath);
-          chapGroup.appendChild(lesDiv);
+        });
+      }
+
+      // Chapters
+      state.tree.chapters.forEach(chap => {
+        const filteredLessons = chap.lessons.filter(l => l.title.toLowerCase().includes(filter) || l.relativePath.toLowerCase().includes(filter));
+        if (filter && filteredLessons.length === 0 && !chap.name.toLowerCase().includes(filter)) return;
+
+        html += `
+          <div class="tree-chapter-title">
+            <span><i class='bx bx-folder'></i> ${chap.number}. ${escapeHtml(chap.name)}</span>
+            <i class='bx bx-trash' style="cursor:pointer;" onclick="deleteChapter('${chap.dirName}', event)" title="Delete chapter"></i>
+          </div>
+        `;
+
+        (filter ? filteredLessons : chap.lessons).forEach(lesson => {
+          const isActive = lesson.relativePath === state.currentPath;
+          html += `
+            <div class="tree-item ${isActive ? 'active' : ''}" onclick="loadArticle('${lesson.relativePath}')">
+              <span class="tree-item-title">
+                <i class='bx bx-file'></i> ${lesson.number}. ${escapeHtml(lesson.title)}
+              </span>
+            </div>
+          `;
+        });
+      });
+
+      elements.treeContainer.innerHTML = html || '<div style="padding:1rem; font-size:0.8rem; color:var(--text-muted);">No articles found.</div>';
+    }
+
+    // Themes Gallery Renderer with Exact Theme Palette Previews
+    function renderThemesGallery() {
+      const themes = state.config.availableThemes || ['default', 'dark', 'blue', 'red', 'green', 'coffee', 'dracula'];
+      const activeTheme = state.config.theme || 'dark';
+
+      let html = '';
+      themes.forEach(themeKey => {
+        const isActive = themeKey === activeTheme;
+        const palette = themePalettes[themeKey] || themePalettes.default;
+        const isBuiltin = ['default', 'dark', 'blue', 'red', 'green', 'coffee'].includes(themeKey);
+
+        const styleVars = `
+          --sk-bg: ${palette.bg};
+          --sk-nav: ${palette.nav};
+          --sk-text: ${palette.text};
+          --sk-muted: ${palette.muted};
+          --sk-border: ${palette.border};
+          --sk-accent: ${palette.accent};
+          --sk-code: ${palette.code};
+        `;
+
+        html += `
+          <div class="theme-card ${isActive ? 'active' : ''}" onclick="selectTheme('${themeKey}')">
+            <!-- Skeleton UI Preview in Theme Exact Colors -->
+            <div class="skeleton-preview" style="${styleVars}">
+              <div class="sk-header">
+                <div class="sk-dot"></div>
+                <div class="sk-nav-line"></div>
+              </div>
+              <div class="sk-body">
+                <div class="sk-sidebar">
+                  <div class="sk-side-line"></div>
+                  <div class="sk-side-line"></div>
+                  <div class="sk-side-line"></div>
+                </div>
+                <div class="sk-content">
+                  <div class="sk-title"></div>
+                  <div class="sk-line"></div>
+                  <div class="sk-line short"></div>
+                  <div class="sk-codebox"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="theme-card-body">
+              <div class="theme-info">
+                <div class="theme-name">${escapeHtml(themeKey)}</div>
+                <div class="theme-tag">${isBuiltin ? 'Built-in Theme' : 'Custom SCSS Theme'}</div>
+              </div>
+              ${isActive ? `
+                <div class="theme-active-indicator">
+                  <i class='bx bx-check-circle'></i> Active
+                </div>
+              ` : `
+                <button class="btn btn-outline btn-sm">
+                  <i class='bx bx-check'></i> Select
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      });
+
+      elements.themesGallery.innerHTML = html;
+    }
+
+    // Layouts Gallery Renderer
+    function renderLayoutsGallery() {
+      if (!elements.layoutsGallery) return;
+      const layouts = state.layouts || [];
+      const activeLayout = state.config.tocLayout || 'grid-cards';
+
+      if (layouts.length === 0) {
+        elements.layoutsGallery.innerHTML = '<div style="padding:1.5rem; background:var(--bg-panel); border:1px solid var(--border-color); border-radius:8px;">No layout plugins found in `layouts/`.</div>';
+        return;
+      }
+
+      let html = '';
+      layouts.forEach(layout => {
+        const isActive = layout.id === activeLayout;
+        const iconClass = layout.id === 'grid-cards' ? 'bx-grid-alt' : (layout.id === 'compact-tree' ? 'bx-git-repo-forked' : 'bx-list-ul');
+
+        html += `
+          <div class="theme-card ${isActive ? 'active' : ''}" onclick="selectLayout('${layout.id}')">
+            <div style="padding: 1.25rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; height: 110px;">
+              <i class='bx ${iconClass}' style="font-size: 3.5rem; color: var(--accent-color);"></i>
+            </div>
+            <div class="theme-card-body">
+              <div class="theme-info">
+                <div class="theme-name">${escapeHtml(layout.name || layout.id)}</div>
+                <div class="theme-tag">${escapeHtml(layout.description || 'Layout Plugin')}</div>
+              </div>
+              ${isActive ? `
+                <div class="theme-active-indicator">
+                  <i class='bx bx-check-circle'></i> Active
+                </div>
+              ` : `
+                <button class="btn btn-outline btn-sm">
+                  <i class='bx bx-check'></i> Select
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      });
+
+      elements.layoutsGallery.innerHTML = html;
+    }
+
+    function selectLayout(layoutId) {
+      updateConfig({ tocLayout: layoutId });
+    }
+
+    // Extensions Tab Renderer
+    function renderExtensionsTab() {
+      if (!state.extensions || state.extensions.length === 0) {
+        elements.extensionsList.innerHTML = '<div style="padding:1.5rem; background:var(--bg-panel); border:1px solid var(--border-color); border-radius:8px;">No extensions found in `quickbook.config.js`.</div>';
+        return;
+      }
+
+      let html = '';
+      state.extensions.forEach(ext => {
+        const extName = ext.name;
+        const currentOpts = state.extensionsConfig[extName] || ext.options || { enabled: true };
+        const schema = ext.configSchema || {};
+
+        let controlsHtml = '';
+        Object.keys(schema).forEach(key => {
+          const field = schema[key];
+          const val = currentOpts[key] !== undefined ? currentOpts[key] : field.default;
+
+          if (field.type === 'boolean') {
+            controlsHtml += `
+              <label class="toggle-row">
+                <input type="checkbox" data-ext="${extName}" data-key="${key}" ${val ? 'checked' : ''}>
+                <span>${escapeHtml(field.label || key)}</span>
+              </label>
+            `;
+          } else if (field.type === 'select') {
+            const optionsHtml = (field.options || []).map(opt => `
+              <option value="${escapeHtml(opt)}" ${val === opt ? 'selected' : ''}>${escapeHtml(opt)}</option>
+            `).join('');
+            controlsHtml += `
+              <div class="ext-form-field">
+                <label class="ext-field-label">${escapeHtml(field.label || key)}</label>
+                <select class="form-input" data-ext="${extName}" data-key="${key}">
+                  ${optionsHtml}
+                </select>
+              </div>
+            `;
+          } else {
+            // text, url, number, etc.
+            controlsHtml += `
+              <div class="ext-form-field">
+                <label class="ext-field-label">${escapeHtml(field.label || key)}</label>
+                <input type="text" class="form-input" data-ext="${extName}" data-key="${key}" value="${escapeHtml(val || '')}" placeholder="${escapeHtml(field.label || key)}">
+              </div>
+            `;
+          }
         });
 
-        container.appendChild(chapGroup);
+        html += `
+          <div class="extension-card" id="ext-card-${extName}">
+            <div class="extension-card-header" onclick="toggleExtCard('${extName}')" style="cursor: pointer; user-select: none;">
+              <div class="ext-title-group">
+                <div class="ext-icon"><i class='bx bx-extension'></i></div>
+                <div>
+                  <div class="ext-title">${escapeHtml(ext.title || extName)}</div>
+                  <div class="ext-name-badge">${escapeHtml(extName)}</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); saveExtCard('${extName}')">
+                  <i class='bx bx-save'></i> Save Config
+                </button>
+                <div class="tool-btn">
+                  <i class='bx bx-chevron-down' id="ext-arrow-${extName}" style="font-size: 1.3rem;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="ext-desc">${escapeHtml(ext.description || 'Custom QuickBook JavaScript extension plugin.')}</div>
+            <div class="ext-controls" id="ext-controls-${extName}" style="display: none;">
+              ${controlsHtml || '<div style="font-size:0.8rem; color:var(--text-muted);">No extra configurable options.</div>'}
+            </div>
+          </div>
+        `;
       });
+
+      elements.extensionsList.innerHTML = html;
     }
 
-    function filterTree() {
-      renderTree(articlesData);
+    function toggleExtCard(extName) {
+      const controls = document.getElementById(`ext-controls-${extName}`);
+      const arrow = document.getElementById(`ext-arrow-${extName}`);
+      if (!controls) return;
+      if (controls.style.display === 'none') {
+        controls.style.display = 'flex';
+        if (arrow) arrow.className = 'bx bx-chevron-up';
+      } else {
+        controls.style.display = 'none';
+        if (arrow) arrow.className = 'bx bx-chevron-down';
+      }
     }
 
-    async function loadArticle(relPath) {
-      currentPath = relPath;
-      const res = await fetch(`/api/article?path=${encodeURIComponent(relPath)}`);
-      const data = await res.json();
+    function saveExtCard(extName) {
+      const inputs = document.querySelectorAll(`[data-ext="${extName}"]`);
+      const updatedOpts = { ...(state.extensionsConfig[extName] || {}) };
 
-      document.getElementById('articleTitleInput').value = data.title || '';
-      document.getElementById('articlePathInput').value = data.relativePath || '';
-      document.getElementById('articleDescInput').value = data.description || '';
-      document.getElementById('markdownTextarea').value = data.content || '';
+      inputs.forEach(input => {
+        const key = input.getAttribute('data-key');
+        if (input.type === 'checkbox') {
+          updatedOpts[key] = input.checked;
+        } else {
+          updatedOpts[key] = input.value;
+        }
+      });
 
-      updatePreview();
-      renderTree(articlesData);
+      const newConfig = { ...state.extensionsConfig, [extName]: updatedOpts };
+      saveExtensionsConfig(newConfig);
+    }
+
+    function renderSettingsForm() {
+      elements.cfgTitle.value = state.config.title || '';
+      elements.cfgSubtitle.value = state.config.subtitle || '';
+      elements.cfgAuthor.value = state.config.author || '';
+      elements.cfgAuthorGithub.value = state.config.authorGithub || '';
+      elements.cfgDescription.value = state.config.description || '';
+      elements.cfgGithub.value = state.config.github || '';
+      elements.cfgLanguage.value = state.config.language || 'en';
+
+      const themes = state.config.availableThemes || ['default', 'dark', 'blue', 'red', 'green', 'coffee', 'dracula'];
+      elements.cfgTheme.innerHTML = themes.map(t => `<option value="${t}" ${t === state.config.theme ? 'selected' : ''}>${t}</option>`).join('');
+    }
+
+    function selectTheme(themeName) {
+      updateConfig({ theme: themeName });
+    }
+
+    async function deleteChapter(folderName, e) {
+      e.stopPropagation();
+      if (!confirm(`Delete entire chapter "${folderName}" and all its lessons?`)) return;
+
+      try {
+        const res = await fetch('/api/chapter', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ folderName })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Chapter deleted', 'success');
+          fetchArticles();
+        }
+      } catch (err) {
+        showToast('Error deleting chapter', 'error');
+      }
     }
 
     function updatePreview() {
-      const text = document.getElementById('markdownTextarea').value;
-      document.getElementById('previewBody').innerHTML = marked.parse(text);
+      const target = elements.articlePreview || document.getElementById('article-preview') || document.getElementById('pane-preview');
+      if (!target || !elements.articleEditor) return;
+      const rawText = elements.articleEditor.value || '';
+      target.innerHTML = renderMarkdown(rawText);
     }
 
-    async function saveCurrentArticle() {
-      if (!currentPath) {
-        showToast('No article selected!', '⚠️');
-        return;
-      }
-      const title = document.getElementById('articleTitleInput').value;
-      const description = document.getElementById('articleDescInput').value;
-      const content = document.getElementById('markdownTextarea').value;
-
-      const res = await fetch('/api/article', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ relativePath: currentPath, title, description, content })
-      });
-      const data = await res.json();
-      if (data.success) {
-        showToast('Article saved successfully!', '💾');
-        fetchTree();
-      } else {
-        showToast('Error saving article', '❌');
-      }
-    }
-
-    async function promptNewChapter() {
-      const num = prompt('Enter Chapter Number (e.g. 1):');
-      if (!num) return;
-      const name = prompt('Enter Chapter Name (e.g. Getting Started):');
-      if (!name) return;
-
-      const res = await fetch('/api/chapter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ number: num, name })
-      });
-      const data = await res.json();
-      if (data.success) {
-        showToast('Chapter created!', '📁');
-        fetchTree();
-      }
-    }
-
-    async function promptNewLesson(chapNum, chapDirName) {
-      const lesNum = prompt('Enter Lesson Number (e.g. 1):');
-      if (!lesNum) return;
-      const title = prompt('Enter Lesson Title (e.g. Introduction):');
-      if (!title) return;
-
-      const relPath = `${chapDirName}/${lesNum} ${title}.md`;
-      await fetch('/api/article', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ relativePath: relPath, title, description: '', content: `# ${title}\n\nStart writing lesson content...` })
-      });
-      showToast('Lesson created!', '📝');
-      await fetchTree();
-      loadArticle(relPath);
-    }
-
-    async function promptNewArticle() {
-      const title = prompt('Enter Top-level Article Title:');
-      if (!title) return;
-      const filename = title.toLowerCase().replace(/[^a-z0-9]/g, '-') + '.md';
-
-      await fetch('/api/article', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ relativePath: filename, title, description: '', content: `# ${title}\n\nStart writing...` })
-      });
-      showToast('Article created!', '📄');
-      await fetchTree();
-      loadArticle(filename);
-    }
-
-    async function deleteArticle(relPath) {
-      if (!confirm(`Delete ${relPath}?`)) return;
-      await fetch('/api/article', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ relativePath: relPath })
-      });
-      showToast('Article deleted!', '🗑️');
-      if (currentPath === relPath) {
-        currentPath = '';
-        document.getElementById('markdownTextarea').value = '';
-        document.getElementById('previewBody').innerHTML = '';
-      }
-      fetchTree();
-    }
-
-    async function deleteChapter(folderName) {
-      if (!confirm(`Delete entire chapter "${folderName}"?`)) return;
-      await fetch('/api/chapter', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ folderName })
-      });
-      showToast('Chapter deleted!', '🗑️');
-      fetchTree();
-    }
-
-    async function generateSite() {
-      showToast('Generating site build...', '⚡');
-      const res = await fetch('/api/generate', { method: 'POST' });
-      const data = await res.json();
-      if (data.success) {
-        showToast('⚡ Site successfully generated in /dist!', '🚀');
-      } else {
-        showToast('Error generating site: ' + data.error, '❌');
-      }
-    }
-
-    function setMode(mode) {
-      document.getElementById('btnModeSplit').classList.toggle('active', mode === 'split');
-      document.getElementById('btnModeEditor').classList.toggle('active', mode === 'editor');
-      document.getElementById('btnModePreview').classList.toggle('active', mode === 'preview');
-
-      const editorPane = document.getElementById('editorPane');
-      const previewPane = document.getElementById('previewPane');
-
-      if (mode === 'split') {
-        editorPane.style.display = 'block';
-        previewPane.style.display = 'block';
-      } else if (mode === 'editor') {
-        editorPane.style.display = 'block';
-        previewPane.style.display = 'none';
-      } else if (mode === 'preview') {
-        editorPane.style.display = 'none';
-        previewPane.style.display = 'block';
-      }
-    }
-
-    function insertSyntax(before, after) {
-      const textarea = document.getElementById('markdownTextarea');
+    // --- Toolbar Formatting Helpers ---
+    function insertFormatting(prefix, suffix = '') {
+      const textarea = elements.articleEditor;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const sel = textarea.value.substring(start, end);
-      textarea.value = textarea.value.substring(0, start) + before + sel + after + textarea.value.substring(end);
+      const text = textarea.value;
+      const selected = text.substring(start, end);
+
+      const replacement = prefix + (selected || 'text') + suffix;
+      textarea.value = text.substring(0, start) + replacement + text.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start + prefix.length, start + prefix.length + (selected.length || 4));
       updatePreview();
     }
 
-    function openSettingsModal() { document.getElementById('settingsModal').classList.add('active'); }
-    function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
+    // --- Event Listeners ---
+    // Tab Switching
+    elements.navTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+        elements.navTabs.forEach(b => b.classList.remove('active'));
+        elements.tabViews.forEach(v => v.classList.remove('active'));
 
-    async function saveSettingsForm() {
-      currentConfig.title = document.getElementById('cfgTitle').value;
-      currentConfig.subtitle = document.getElementById('cfgSubtitle').value;
-      currentConfig.author = document.getElementById('cfgAuthor').value;
-      currentConfig.authorGithub = document.getElementById('cfgAuthorGithub').value;
-      currentConfig.description = document.getElementById('cfgDescription').value;
-
-      await fetch('/api/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentConfig)
+        btn.classList.add('active');
+        document.getElementById(targetTab).classList.add('active');
       });
-      showToast('Settings saved!', '⚙️');
-      closeSettingsModal();
-      fetchConfig();
-    }
+    });
 
-    // Keyboard shortcut Ctrl+S
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        saveCurrentArticle();
+    // View Mode Switcher
+    elements.modeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        elements.modeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mode = btn.getAttribute('data-mode');
+        state.viewMode = mode;
+
+        if (mode === 'split') {
+          elements.paneCode.style.display = 'flex';
+          elements.panePreview.style.display = 'block';
+        } else if (mode === 'code') {
+          elements.paneCode.style.display = 'flex';
+          elements.panePreview.style.display = 'none';
+        } else if (mode === 'preview') {
+          elements.paneCode.style.display = 'none';
+          elements.panePreview.style.display = 'block';
+        }
+      });
+    });
+
+    // Editor Live Input
+    elements.articleEditor.addEventListener('input', updatePreview);
+    elements.treeSearch.addEventListener('input', renderArticlesTree);
+
+    // Toolbar Commands
+    document.querySelectorAll('.tool-btn[data-cmd]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cmd = btn.getAttribute('data-cmd');
+        if (cmd === 'bold') insertFormatting('**', '**');
+        if (cmd === 'italic') insertFormatting('*', '*');
+        if (cmd === 'h1') insertFormatting('# ');
+        if (cmd === 'h2') insertFormatting('## ');
+        if (cmd === 'code') insertFormatting('`', '`');
+        if (cmd === 'quote') insertFormatting('> ');
+        if (cmd === 'link') insertFormatting('[', '](https://)');
+        if (cmd === 'list') insertFormatting('- ');
+      });
+    });
+
+    // Save & Delete
+    elements.btnSaveArticle.addEventListener('click', saveArticle);
+    elements.btnDeleteArticle.addEventListener('click', deleteArticle);
+    elements.btnBuild.addEventListener('click', buildSite);
+    elements.btnPreview.addEventListener('click', () => {
+      window.open('http://localhost:5173', '_blank');
+    });
+
+    elements.btnSaveSettings.addEventListener('click', () => {
+      updateConfig({
+        title: elements.cfgTitle.value,
+        subtitle: elements.cfgSubtitle.value,
+        author: elements.cfgAuthor.value,
+        authorGithub: elements.cfgAuthorGithub.value,
+        description: elements.cfgDescription.value,
+        github: elements.cfgGithub.value,
+        language: elements.cfgLanguage.value,
+        theme: elements.cfgTheme.value
+      });
+    });
+
+    // Modal Handlers
+    const modalChap = document.getElementById('modal-chapter');
+    const modalArt = document.getElementById('modal-article');
+
+    document.getElementById('btn-new-chapter').addEventListener('click', () => modalChap.classList.add('active'));
+    document.getElementById('modal-chapter-close').addEventListener('click', () => modalChap.classList.remove('active'));
+    document.getElementById('modal-chapter-cancel').addEventListener('click', () => modalChap.classList.remove('active'));
+
+    document.getElementById('modal-chapter-submit').addEventListener('click', async () => {
+      const num = document.getElementById('new-chap-num').value;
+      const name = document.getElementById('new-chap-name').value.trim();
+      if (!name) return alert('Chapter name required');
+
+      try {
+        const res = await fetch('/api/chapter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number: num, name })
+        });
+        const data = await res.json();
+        if (data.success) {
+          modalChap.classList.remove('active');
+          showToast('Chapter created', 'success');
+          fetchArticles();
+        }
+      } catch (err) {
+        showToast('Failed to create chapter', 'error');
       }
     });
 
-    // Init
+    document.getElementById('btn-new-article').addEventListener('click', () => {
+      // Populate chapter dropdown
+      const select = document.getElementById('new-art-chapter');
+      select.innerHTML = '<option value="">Top-Level Article (No chapter)</option>' +
+        state.tree.chapters.map(c => `<option value="${c.dirName}">${c.number}. ${escapeHtml(c.name)}</option>`).join('');
+      modalArt.classList.add('active');
+    });
+
+    document.getElementById('modal-article-close').addEventListener('click', () => modalArt.classList.remove('active'));
+    document.getElementById('modal-article-cancel').addEventListener('click', () => modalArt.classList.remove('active'));
+
+    document.getElementById('modal-article-submit').addEventListener('click', async () => {
+      const chapterDir = document.getElementById('new-art-chapter').value;
+      const num = document.getElementById('new-art-num').value;
+      const title = document.getElementById('new-art-title').value.trim();
+      if (!title) return alert('Article title required');
+
+      let relPath = '';
+      if (chapterDir) {
+        relPath = `${chapterDir}/${num} ${title}.md`;
+      } else {
+        relPath = `${title}.md`;
+      }
+
+      try {
+        const res = await fetch('/api/article', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            relativePath: relPath,
+            title: title,
+            description: '',
+            content: `# ${title}\n\nStart writing your article content here.`
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          modalArt.classList.remove('active');
+          showToast('Article created', 'success');
+          fetchArticles();
+          loadArticle(relPath);
+        }
+      } catch (err) {
+        showToast('Failed to create article', 'error');
+      }
+    });
+
+    // Helper Toast
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class='bx ${type === 'success' ? 'bx-check-circle' : 'bx-info-circle'}'></i> ${escapeHtml(message)}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Initialize App
     fetchConfig();
-    fetchTree();
+    fetchLayouts();
+    fetchExtensions();
+    fetchArticles();
   </script>
 </body>
 </html>

@@ -13,6 +13,9 @@ In your project directory, you can run:
 ### `npm run admin`
 Launches the interactive Admin Panel at **`http://localhost:4455`** where you can visually manage chapters, edit articles with live Markdown preview, change themes, and trigger builds.
 
+### `npm run update`
+Updates QuickBook Studio (`.quickbook/`), generator scripts (`build-articles.js`), and core configs to the latest QuickBook version while protecting your articles, `settings.json`, and `quickbook.config.js`.
+
 ### `npm run dev`
 Starts the local development server with hot reloading.
 

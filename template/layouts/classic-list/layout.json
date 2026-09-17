@@ -1,0 +1,8 @@
+{
+  "id": "classic-list",
+  "name": "Classic List Layout",
+  "description": "Traditional GitHub Pages documentation list layout with lesson numbers and descriptions.",
+  "target": "toc",
+  "version": "1.0.0",
+  "author": "Quickbook Core"
+}

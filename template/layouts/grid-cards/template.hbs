@@ -1,0 +1,37 @@
+<div class="qb-layout-grid-cards">
+  {{#if topLevelArticles.length}}
+  <div class="grid-section">
+    <h3 class="grid-section-title">Overview & Guides</h3>
+    <div class="cards-grid">
+      {{#each topLevelArticles}}
+      <a href="{{url}}" class="toc-card">
+        <div class="card-icon"><i class='bx bx-file-blank'></i></div>
+        <div class="card-content">
+          <h4 class="card-title">{{title}}</h4>
+          <p class="card-desc">{{description}}</p>
+        </div>
+      </a>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if sortedChapters.length}}
+  {{#each sortedChapters}}
+  <div class="grid-section">
+    <h3 class="grid-section-title">Chapter {{number}}: {{name}}</h3>
+    <div class="cards-grid">
+      {{#each lessons}}
+      <a href="{{url}}" class="toc-card">
+        <div class="card-icon"><i class='bx bx-book-open'></i></div>
+        <div class="card-content">
+          <h4 class="card-title">Lesson {{../number}}.{{lessonNum}}: {{displayTitleClean}}</h4>
+          <p class="card-desc">{{description}}</p>
+        </div>
+      </a>
+      {{/each}}
+    </div>
+  </div>
+  {{/each}}
+  {{/if}}
+</div>

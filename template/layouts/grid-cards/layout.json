@@ -1,0 +1,8 @@
+{
+  "id": "grid-cards",
+  "name": "Grid Cards Layout",
+  "description": "Transforms the Table of Contents into an interactive responsive grid of cards.",
+  "target": "toc",
+  "version": "1.0.0",
+  "author": "Quickbook Core"
+}

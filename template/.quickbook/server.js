@@ -51,16 +51,34 @@ function stringifyFrontmatter(data, content) {
   return yaml + content.trimStart();
 }
 
+function getAvailableThemes() {
+  const builtin = ['default', 'dark', 'blue', 'red', 'green', 'coffee'];
+  const configPath = path.join(projectRoot, 'quickbook.config.js');
+  if (fs.existsSync(configPath)) {
+    try {
+      const content = fs.readFileSync(configPath, 'utf-8');
+      const match = content.match(/themes\s*:\s*\{([\s\S]*?)\}/);
+      if (match) {
+        const themeKeys = match[1].match(/([a-zA-Z0-9_-]+)\s*:/g);
+        if (themeKeys) {
+          themeKeys.forEach(k => {
+            const name = k.replace(':', '').trim();
+            if (name && !builtin.includes(name)) {
+              builtin.push(name);
+            }
+          });
+        }
+      }
+    } catch (e) {}
+  }
+  return builtin;
+}
+
 function getSettings() {
   const settingsPath = path.join(projectRoot, 'settings.json');
   const legacyPath = path.join(projectRoot, 'book.config.json');
   const p = fs.existsSync(settingsPath) ? settingsPath : legacyPath;
-  if (fs.existsSync(p)) {
-    try {
-      return JSON.parse(fs.readFileSync(p, 'utf-8'));
-    } catch (e) {}
-  }
-  return {
+  let data = {
     title: 'My Quickbook Handbook',
     subtitle: 'A step-by-step documentation guide',
     author: 'Author Name',
@@ -70,6 +88,13 @@ function getSettings() {
     language: 'en',
     theme: 'dark'
   };
+  if (fs.existsSync(p)) {
+    try {
+      data = { ...data, ...JSON.parse(fs.readFileSync(p, 'utf-8')) };
+    } catch (e) {}
+  }
+  data.availableThemes = getAvailableThemes();
+  return data;
 }
 
 function saveSettings(settings) {
@@ -159,6 +184,125 @@ function readBody(req) {
   });
 }
 
+function getExtensionsConfig() {
+  const extConfigPath = path.join(projectRoot, 'extensions.config.json');
+  if (fs.existsSync(extConfigPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(extConfigPath, 'utf-8'));
+    } catch (e) {}
+  }
+  return {};
+}
+
+function saveExtensionsConfig(config) {
+  const extConfigPath = path.join(projectRoot, 'extensions.config.json');
+  fs.writeFileSync(extConfigPath, JSON.stringify(config, null, 2) + '\n', 'utf-8');
+}
+
+async function getExtensionsList() {
+  const currentConfig = getExtensionsConfig();
+  const extensions = [];
+
+  const quickbookConfigPath = path.join(projectRoot, 'quickbook.config.js');
+  if (fs.existsSync(quickbookConfigPath)) {
+    try {
+      const userConfigModule = await import(`file://${quickbookConfigPath}`);
+      const extConfig = userConfigModule.default || {};
+      const extList = Array.isArray(extConfig.extensions)
+        ? extConfig.extensions
+        : Object.values(extConfig.extensions || {});
+
+      for (const item of extList) {
+        if (typeof item === 'string') {
+          const extPath = path.resolve(projectRoot, item);
+          if (fs.existsSync(extPath)) {
+            try {
+              const extModule = await import(`file://${extPath}?t=${Date.now()}`);
+              const extObj = extModule.default || extModule;
+              if (extObj && extObj.name) {
+                extensions.push({
+                  name: extObj.name,
+                  title: extObj.title || extObj.name,
+                  description: extObj.description || '',
+                  configSchema: extObj.configSchema || {
+                    enabled: { type: 'boolean', default: true, label: 'Enable Extension' }
+                  },
+                  options: { enabled: true, ...(currentConfig[extObj.name] || {}) }
+                });
+              }
+            } catch (e) {}
+          }
+        } else if (typeof item === 'object' && item !== null && item.name) {
+          extensions.push({
+            name: item.name,
+            title: item.title || item.name,
+            description: item.description || '',
+            configSchema: item.configSchema || {
+              enabled: { type: 'boolean', default: true, label: 'Enable Extension' }
+            },
+            options: { enabled: true, ...(currentConfig[item.name] || {}) }
+          });
+        }
+      }
+    } catch (e) {}
+  }
+
+  return extensions;
+}
+
+function triggerBuild() {
+  exec('node build-articles.js', { cwd: projectRoot }, (err, stdout, stderr) => {
+    if (err) {
+      console.error('[admin-server] Auto-build error:', stderr || err.message);
+    } else {
+      console.log('[admin-server] Auto-build success:', stdout.trim());
+    }
+  });
+}
+
+function getLayoutsList() {
+  const layoutsDir = path.join(projectRoot, 'layouts');
+  const layouts = [];
+
+  if (fs.existsSync(layoutsDir)) {
+    const items = fs.readdirSync(layoutsDir, { withFileTypes: true });
+    for (const item of items) {
+      if (item.isDirectory()) {
+        const dirPath = path.join(layoutsDir, item.name);
+        const configPath = path.join(dirPath, 'layout.json');
+        const legacyPath = path.join(dirPath, 'config.json');
+        const p = fs.existsSync(configPath) ? configPath : (fs.existsSync(legacyPath) ? legacyPath : null);
+
+        let meta = {
+          id: item.name,
+          name: item.name,
+          description: 'Custom Quickbook layout plugin.',
+          target: 'toc',
+          version: '1.0.0',
+          author: 'Custom'
+        };
+
+        if (p) {
+          try {
+            meta = { ...meta, ...JSON.parse(fs.readFileSync(p, 'utf-8')) };
+          } catch (e) {}
+        }
+
+        const cssPath = path.join(dirPath, 'styles.css');
+        const tplPath = path.join(dirPath, 'template.hbs');
+        meta.hasStyles = fs.existsSync(cssPath);
+        meta.hasTemplate = fs.existsSync(tplPath);
+
+        layouts.push(meta);
+      }
+    }
+  }
+
+  const settings = getSettings();
+  const activeTocLayout = settings.tocLayout || 'grid-cards';
+  return { layouts, activeTocLayout };
+}
+
 // HTTP Server
 const server = http.createServer(async (req, res) => {
   const urlObj = new URL(req.url, `http://${req.headers.host}`);
@@ -186,6 +330,29 @@ const server = http.createServer(async (req, res) => {
 
   // --- API ENDPOINTS ---
 
+  // 0. GET /api/layouts
+  if (pathname === '/api/layouts' && method === 'GET') {
+    return jsonResponse(getLayoutsList());
+  }
+
+  // 0. GET /api/extensions & POST /api/extensions
+  if (pathname === '/api/extensions') {
+    if (method === 'GET') {
+      const exts = await getExtensionsList();
+      return jsonResponse({ extensions: exts, config: getExtensionsConfig() });
+    }
+    if (method === 'POST') {
+      try {
+        const body = await readBody(req);
+        saveExtensionsConfig(body);
+        triggerBuild();
+        return jsonResponse({ success: true, config: getExtensionsConfig() });
+      } catch (err) {
+        return jsonResponse({ error: err.message }, 400);
+      }
+    }
+  }
+
   // 1. GET /api/config & POST /api/config
   if (pathname === '/api/config') {
     if (method === 'GET') {
@@ -195,6 +362,7 @@ const server = http.createServer(async (req, res) => {
       try {
         const body = await readBody(req);
         saveSettings(body);
+        triggerBuild();
         return jsonResponse({ success: true, settings: getSettings() });
       } catch (err) {
         return jsonResponse({ error: err.message }, 400);
@@ -240,6 +408,7 @@ const server = http.createServer(async (req, res) => {
 
         const rawMarkdown = stringifyFrontmatter({ title, description }, content || '');
         fs.writeFileSync(targetPath, rawMarkdown, 'utf-8');
+        triggerBuild();
         return jsonResponse({ success: true, relativePath });
       } catch (err) {
         return jsonResponse({ error: err.message }, 500);
@@ -256,6 +425,7 @@ const server = http.createServer(async (req, res) => {
         if (fs.existsSync(targetPath)) {
           fs.unlinkSync(targetPath);
         }
+        triggerBuild();
         return jsonResponse({ success: true });
       } catch (err) {
         return jsonResponse({ error: err.message }, 500);
@@ -276,6 +446,7 @@ const server = http.createServer(async (req, res) => {
         if (!fs.existsSync(targetPath)) {
           fs.mkdirSync(targetPath, { recursive: true });
         }
+        triggerBuild();
         return jsonResponse({ success: true, folderName });
       } catch (err) {
         return jsonResponse({ error: err.message }, 500);
@@ -292,6 +463,7 @@ const server = http.createServer(async (req, res) => {
         if (fs.existsSync(targetPath)) {
           fs.rmSync(targetPath, { recursive: true, force: true });
         }
+        triggerBuild();
         return jsonResponse({ success: true });
       } catch (err) {
         return jsonResponse({ error: err.message }, 500);

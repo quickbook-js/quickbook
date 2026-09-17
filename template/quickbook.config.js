@@ -18,6 +18,7 @@ export default {
    * Array of file paths to JavaScript extensions exporting transform functions.
    */
   extensions: [
-    './src/extensions/author-date.js'
+    './src/extensions/author-date.js',
+    './src/extensions/socials.js'
   ]
 };

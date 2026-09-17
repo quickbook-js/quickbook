@@ -1,0 +1,34 @@
+<div class="qb-layout-classic-list">
+  {{#if topLevelArticles.length}}
+  <div class="toc-toplevel">
+    <ul class="book-toc-list">
+      {{#each topLevelArticles}}
+      <li class="book-toc-item">
+        <div class="toc-header">
+          <a href="{{url}}" class="toc-link"><strong>{{title}}</strong></a>
+        </div>
+        {{#if description}}<p class="toc-desc">{{description}}</p>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  {{#if sortedChapters.length}}
+  <div class="toc-chapters">
+    {{#each sortedChapters}}
+    <div class="toc-chapter-block">
+      <h3 class="chapter-title">Chapter {{number}}: {{name}}</h3>
+      <ol class="lesson-list">
+        {{#each lessons}}
+        <li class="lesson-item">
+          <a href="{{url}}" class="toc-link"><strong>Lesson {{../number}}.{{lessonNum}}:</strong> {{displayTitleClean}}</a>
+          {{#if description}}<p class="toc-desc">{{description}}</p>{{/if}}
+        </li>
+        {{/each}}
+      </ol>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

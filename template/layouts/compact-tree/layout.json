@@ -1,0 +1,8 @@
+{
+  "id": "compact-tree",
+  "name": "Compact Tree Layout",
+  "description": "Dense minimalist tree layout optimized for comprehensive documentation.",
+  "target": "toc",
+  "version": "1.0.0",
+  "author": "Quickbook Core"
+}
